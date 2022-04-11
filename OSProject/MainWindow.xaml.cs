@@ -21,6 +21,7 @@ namespace OSProject
 {
     public partial class MainWindow : Window
     {
+        // Добавить ViewModel для добавления новой раскладки
         private AppViewModel ViewModel { get; set; }
 
         private static readonly Size _buttonSize = new Size(40, 40);
@@ -30,6 +31,8 @@ namespace OSProject
         public MainWindow()
         {
             InitializeComponent();
+            this.ResizeMode = ResizeMode.NoResize;
+
             ViewModel = new AppViewModel("Зелибиба");
 
             textBlock.DataContext = ViewModel;
@@ -121,5 +124,22 @@ namespace OSProject
                 ShowKeyboardButtons();
             }
         }
+
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(ViewModel);
+
+            if (layoutAddingWindow.ShowDialog() == true)
+            {
+                // добавлять новую раскладку в коллекцию + добавлять новый файл
+                ViewModel.Layouts.Add(layoutAddingWindow.viewModel.NewLayout);
+            }
+            else
+            {
+                MessageBox.Show("BibleTum :(");
+            }
+        }
+
     }
 }

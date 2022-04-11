@@ -15,13 +15,18 @@
                     <RowDefinition Height="0.8*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.2*"/>
-                    <ColumnDefinition Width="0.7*"/>
-                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition Width="160*"/>
+                    <ColumnDefinition Width="900*"/>
+                    <ColumnDefinition Width="220*"/>
                 </Grid.ColumnDefinitions>
 
-                <DockPanel Grid.Row="0" Grid.Column="1"
-                       Background="Cyan">
+                <Button Grid.Column="0" Grid.Row="0"
+                        Width="100" Height="30" 
+                        Content="Добавить" Click="Login_Click" 
+                        />
+
+                <DockPanel Grid.Row="0"
+                       Background="Cyan" Grid.ColumnSpan="2" Margin="161,0,0,320" Grid.RowSpan="2">
 
                     <DockPanel Margin="30 -50 30 0" Height="70" MaxWidth="830">
                         <TextBox x:Name="textBlock" TextWrapping="Wrap" FontSize="20"  Text="{Binding Path=Value}" 
@@ -46,10 +51,10 @@
 
                 <Canvas Grid.Column="1" Grid.Row="1" 
                     ButtonBase.Click="Canvas_Click"
-                    x:Name="keyboardCanvas" Background="AliceBlue">
+                    x:Name="keyboardCanvas" Background="AliceBlue" Grid.ColumnSpan="2" Margin="0,0,217,0">
                 </Canvas>
 
-                <ScrollViewer Grid.Row="1" Grid.Column="2">
+                <ScrollViewer Grid.Row="1" Grid.Column="3" >
                     <ListBox SelectionChanged="KeyboardLayoutsPanel_SelectionChanged" x:Name="keyboardLayoutsPanel" ItemsSource="{Binding Layouts}"
                          SelectedItem="{Binding CurrentLayout}">
                         <ListBox.ItemTemplate>
@@ -62,9 +67,46 @@
             </Grid>
         </TabItem>
         <TabItem Header="Вкладка 2">
-            <TextBlock>Вторая вкладка</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="0.3*"/>
+                    <ColumnDefinition Width="0.7*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.6*"/>
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                           Margin="15 30 10 50">
+                    <Button DockPanel.Dock="Top" 
+                            Padding="10"
+                            MaxHeight="50">
+                        Добавить раскладку
+                    </Button>
+                    <Button DockPanel.Dock="Top" 
+                            Padding="10" 
+                            MaxHeight="50">
+                        Сохранить
+                    </Button>
+                </DockPanel>
+                <TextBox Grid.Column="1" Grid.Row="0" 
+                    Margin="15 35 15 5"
+                    TextAlignment="Center" FontSize="20"
+                    Background="AliceBlue"
+                    MaxLength="12" >
+                    Название
+                </TextBox>
+                <ListBox Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                            Margin="10">
+                    <Button Height="30" Width="30">+</Button>
+
+                </ListBox>
+            </Grid>
+
         </TabItem>
 
     </TabControl>
-    
+
 </Window>

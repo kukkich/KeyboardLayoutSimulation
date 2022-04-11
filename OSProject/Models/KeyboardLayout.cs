@@ -14,33 +14,74 @@ namespace OSProject.Models
         // или сделать класс линии, который будет хранить в себе кнопки
         // Сделать конструктор, принимающий StreamReader
 
-        public string Name 
-        { 
+        public string Name
+        {
             get => _name;
             set => _name = value;
         }
 
         private string _name;
         private List<List<KeyboardButton>> _lines;
+        private static int _maxStringLength = 15;
+        private static int _maxStringNumber = 5;
 
         public KeyboardLayout(string name, StreamReader stream)
         {
+            if (String.IsNullOrEmpty(name)) throw new ArgumentException("Пустое имя", nameof(name));
             if (stream is null) throw new ArgumentNullException(nameof(stream));
 
             _name = name;
             _lines = new List<List<KeyboardButton>>();
-            
+
             int lastLineIndex = 0;
             int lastButtonId = 0;
             while (!stream.EndOfStream)
             {
-                _lines.Add(new List<KeyboardButton>());
-                foreach (char sym in stream.ReadLine())
+                if (lastLineIndex > _maxStringNumber)
+                    throw new ArgumentException("To much strings", nameof(stream));
+
+                var str = stream.ReadLine();
+                if (!String.IsNullOrEmpty(str))
                 {
-                    _lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
-                    lastButtonId++;
+                    _lines.Add(new List<KeyboardButton>());
+                    foreach (char sym in str)
+                    {
+                        _lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
+                        lastButtonId++;
+                    }
+                    lastLineIndex++;
                 }
-                lastLineIndex++;
+            }
+        }
+
+        public KeyboardLayout(string name, string text)
+        {
+            if (String.IsNullOrEmpty(name)) throw new ArgumentException("Пустое имя", nameof(name));
+
+            if (String.IsNullOrEmpty(text)) throw new ArgumentException("Пустая строка", nameof(text));
+
+            _name = name;
+            _lines = new List<List<KeyboardButton>>();
+
+            int lastLineIndex = 0;
+            int lastButtonId = 0;
+            foreach (string str in text.Split('\n'))
+            {
+                if (str.Length > _maxStringLength)
+                    throw new ArgumentException(str, nameof(text));
+                if (lastLineIndex > _maxStringNumber)
+                    throw new ArgumentException("Много строк в раскладке", nameof(text));
+
+                if (!String.IsNullOrEmpty(str))
+                {
+                    _lines.Add(new List<KeyboardButton>());
+                    foreach (char sym in str)
+                    {
+                        _lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
+                        lastButtonId++;
+                    }
+                    lastLineIndex++;
+                }
             }
         }
 
