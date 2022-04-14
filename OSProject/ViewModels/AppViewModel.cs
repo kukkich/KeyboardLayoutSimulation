@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using OSProject.Models;
-using System.IO;
+﻿using OSProject.Models;
+using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace OSProject.ViewModels
 {
@@ -51,7 +48,7 @@ namespace OSProject.ViewModels
         {
             CurrentLayout = Layouts.First(x => x.Name == name);
         }
-        
+
         public void UpdateLayouts()
         {
             var layoutsData = _rootDirectory.GetFiles();
@@ -73,7 +70,7 @@ namespace OSProject.ViewModels
 
         private void ChangeLayout(string layoutName)
         {
-            CurrentLayout = Layouts.First(x => x.Name ==layoutName);
+            CurrentLayout = Layouts.First(x => x.Name == layoutName);
         }
 
         public void Clear()

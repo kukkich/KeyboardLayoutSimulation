@@ -1,21 +1,11 @@
-﻿using System;
+﻿using OSProject.Models;
+using OSProject.Models.UI;
+using OSProject.ViewModels;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using OSProject.Models;
-using OSProject.ViewModels;
 
 namespace OSProject
 {
@@ -67,16 +57,20 @@ namespace OSProject
 
             foreach (KeyboardButton button in line)
             {
-                Button UIbutton = new Button
+
+                DataButton UIbutton = new DataButton
                 {
                     Content = button.Value,
                     Width = _buttonSize.Width,
                     Height = _buttonSize.Height
                 };
 
+                //UIbutton.AddOrChangeValue("BindedValue", button.Value);
+                //UIbutton.AddOrChangeValue("Id", )
+
                 UIbutton.SetValue(
                     Canvas.LeftProperty,
-                    lineButtonNumber * (_buttonHorizontalSpaceBetween + _buttonSize.Width) + 
+                    lineButtonNumber * (_buttonHorizontalSpaceBetween + _buttonSize.Width) +
                     linePadding
                 );
                 UIbutton.SetValue(
@@ -128,7 +122,7 @@ namespace OSProject
 
         private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
     }
