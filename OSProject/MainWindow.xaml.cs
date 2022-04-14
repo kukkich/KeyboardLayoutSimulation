@@ -126,19 +126,9 @@ namespace OSProject
         }
 
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
-            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(ViewModel);
-
-            if (layoutAddingWindow.ShowDialog() == true)
-            {
-                // добавлять новую раскладку в коллекцию + добавлять новый файл
-                ViewModel.Layouts.Add(layoutAddingWindow.viewModel.NewLayout);
-            }
-            else
-            {
-                MessageBox.Show("BibleTum :(");
-            }
+            
         }
 
     }
