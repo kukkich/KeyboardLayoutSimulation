@@ -75,8 +75,9 @@ namespace OSProject
                     Height = _buttonSize.Height
                 };
 
-                //UIbutton.AddOrChangeValue("BindedValue", button.Value);
-                //UIbutton.AddOrChangeValue("Id", )
+                // it migth need in fixing 
+                UIbutton.AddOrChangeValue("BindedValue", button.Value);
+                UIbutton.AddOrChangeValue("Id", button.Id); 
 
                 UIbutton.SetValue(
                     Canvas.LeftProperty,
@@ -95,9 +96,9 @@ namespace OSProject
 
         private void Canvas_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Source is Button button)
+            if (e.Source is DataButton button)
             {
-                ViewModel.Value += button.Content;
+                ViewModel.Value += ViewModel.CurrentLayout.GetBottonValue((int)button.GetData("Id"));
             }
         }
 
@@ -132,6 +133,17 @@ namespace OSProject
 
         private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
+            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow();
+
+            if (layoutAddingWindow.ShowDialog() == true)
+            {
+                MessageBox.Show("Ультра харош!");
+
+            }
+            else
+            {
+                MessageBox.Show("Вы мистер лох");
+            }
 
         }
 

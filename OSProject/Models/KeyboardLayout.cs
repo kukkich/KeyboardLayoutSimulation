@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 
 namespace OSProject.Models
 {
     public class KeyboardLayout : IEnumerable<List<KeyboardButton>>
     {
-        // или сделать класс линии, который будет хранить в себе кнопки
-
         public string Name
         {
             get => _name;
@@ -17,7 +16,11 @@ namespace OSProject.Models
 
         public char? GetBottonValue(int buttonId)
         {
-            throw new NotImplementedException();
+            return _lines.FirstOrDefault(line => 
+                    line.Any(button => button.Id == buttonId)
+                )
+                ?.FirstOrDefault(button => button.Id == buttonId)
+                ?.Value;
         }
 
         private string _name;
