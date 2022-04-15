@@ -6,6 +6,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace OSProject
 {
@@ -22,6 +24,14 @@ namespace OSProject
         {
             InitializeComponent();
             this.ResizeMode = ResizeMode.NoResize;
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json").Build();
+            DefaultKeyboardLayoutConfig layoutConfig = config
+                .GetSection(nameof(DefaultKeyboardLayoutConfig))
+                .Get<DefaultKeyboardLayoutConfig>();
+
 
             ViewModel = new AppViewModel("Зелибиба");
 

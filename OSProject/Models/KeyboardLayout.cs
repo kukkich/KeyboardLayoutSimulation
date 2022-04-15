@@ -7,14 +7,17 @@ namespace OSProject.Models
 {
     public class KeyboardLayout : IEnumerable<List<KeyboardButton>>
     {
-        // Сделать чтобы клавиши хранились по линиям в List<buttons>
         // или сделать класс линии, который будет хранить в себе кнопки
-        // Сделать конструктор, принимающий StreamReader
 
         public string Name
         {
             get => _name;
             set => _name = value;
+        }
+
+        public char? GetBottonValue(int buttonId)
+        {
+            throw new NotImplementedException();
         }
 
         private string _name;
