@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="Models\DefaultKeyboardLayoutConfig.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
+    <Compile Include="ViewModels\LayoutAddingViewModel.cs" />
     <Page Include="LayoutAddingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

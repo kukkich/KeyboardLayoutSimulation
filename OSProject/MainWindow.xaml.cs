@@ -33,7 +33,7 @@ namespace OSProject
                 .Get<DefaultKeyboardLayoutConfig>();
 
 
-            ViewModel = new AppViewModel("Зелибиба");
+            ViewModel = new AppViewModel("Зелибиба", layoutConfig);
 
             textBlock.DataContext = ViewModel;
             keyboardLayoutsPanel.DataContext = ViewModel;
@@ -42,10 +42,10 @@ namespace OSProject
             // в зависимости от выбранного чекбокса
             ViewModel.UpdateLayouts();
             ViewModel.SetLayout("Eng");
-            ShowKeyboardButtons();
+            ShowKeyboard();
         }
 
-        private void ShowKeyboardButtons()
+        private void ShowKeyboard()
         {
             keyboardCanvas.Children.Clear();
             int lineNumber = 0;
@@ -70,7 +70,7 @@ namespace OSProject
 
                 DataButton UIbutton = new DataButton
                 {
-                    Content = button.Value,
+                    Content = ViewModel.GetConfiguredCharacter(button.Id),
                     Width = _buttonSize.Width,
                     Height = _buttonSize.Height
                 };
@@ -94,7 +94,7 @@ namespace OSProject
             }
         }
 
-        private void Canvas_Click(object sender, RoutedEventArgs e)
+        private void KeyboardCanvas_Click(object sender, RoutedEventArgs e)
         {
             if (e.Source is DataButton button)
             {
@@ -116,6 +116,7 @@ namespace OSProject
         {
 
         }
+
         private void ShowLayoutsPanel()
         {
         }
@@ -126,7 +127,7 @@ namespace OSProject
                 selectedItem.SelectedItem is KeyboardLayout layout)
             {
                 ViewModel.SetLayout(layout.Name);
-                ShowKeyboardButtons();
+                ShowKeyboard();
             }
         }
 

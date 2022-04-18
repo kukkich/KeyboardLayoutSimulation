@@ -48,7 +48,7 @@
         </DockPanel>
 
         <Canvas Grid.Column="1" Grid.Row="1" 
-                    ButtonBase.Click="Canvas_Click"
+                    ButtonBase.Click="KeyboardCanvas_Click"
                     x:Name="keyboardCanvas" Background="AliceBlue" Grid.ColumnSpan="2" Margin="0,0,217,0">
         </Canvas>
 

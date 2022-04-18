@@ -30,18 +30,19 @@ namespace OSProject.ViewModels
         }
         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
 
+        public DefaultKeyboardLayoutConfig _layoutConfig;
         private string _value;
         private KeyboardLayout _currentLayout;
         private DirectoryInfo _rootDirectory;
         private string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
         private string _layoutsFileExtension = ".txt";
 
-        public AppViewModel(string content)
+        public AppViewModel(string content, DefaultKeyboardLayoutConfig defaultLayoutConfig)
         {
+            _layoutConfig = defaultLayoutConfig;
             Value = content;
             Layouts = new ObservableCollection<KeyboardLayout>();
             _rootDirectory = new DirectoryInfo(_layoutsDirectoryRoot);
-
         }
 
         public void SetLayout(string name)
@@ -84,9 +85,14 @@ namespace OSProject.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        private void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+
+        public char GetConfiguredCharacter(int characterId)
+        {
+            return _layoutConfig.GetCharacterById(characterId);
         }
 
     }
