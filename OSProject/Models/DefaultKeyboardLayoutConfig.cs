@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OSProject.Models
 {
     public class DefaultKeyboardLayoutConfig
     {
-        public string[] Lines 
+        public string[] Lines
         {
             get => _lines;
             set
@@ -19,9 +16,10 @@ namespace OSProject.Models
                 {
                     sb.Append(line);
                 }
-                _text = sb.ToString(); 
-            } 
+                _text = sb.ToString();
+            }
         }
+
         private string[] _lines;
         private string _text { get; set; }
 
@@ -33,7 +31,7 @@ namespace OSProject.Models
                 text.Append(line);
                 text.Append('\n');
             }
-            
+
             return new KeyboardLayout("default", text.ToString());
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 
 namespace OSProject.Models
 {
@@ -14,19 +14,19 @@ namespace OSProject.Models
             set => _name = value;
         }
 
+        private string _name;
+        private List<List<KeyboardButton>> _lines;
+        private static int _maxStringLength = 15;
+        private static int _maxStringNumber = 5;
+
         public char? GetBottonValue(int buttonId)
         {
-            return _lines.FirstOrDefault(line => 
+            return _lines.FirstOrDefault(line =>
                     line.Any(button => button.Id == buttonId)
                 )
                 ?.FirstOrDefault(button => button.Id == buttonId)
                 ?.Value;
         }
-
-        private string _name;
-        private List<List<KeyboardButton>> _lines;
-        private static int _maxStringLength = 15;
-        private static int _maxStringNumber = 5;
 
         public KeyboardLayout(string name, StreamReader stream)
         {

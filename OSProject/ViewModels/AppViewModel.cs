@@ -30,7 +30,7 @@ namespace OSProject.ViewModels
         }
         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
 
-        public DefaultKeyboardLayoutConfig _layoutConfig;
+        private DefaultKeyboardLayoutConfig _layoutConfig;
         private string _value;
         private KeyboardLayout _currentLayout;
         private DirectoryInfo _rootDirectory;
@@ -61,6 +61,29 @@ namespace OSProject.ViewModels
             }
         }
 
+        public char GetConfiguredCharacter(int characterId)
+        {
+            return _layoutConfig.GetCharacterById(characterId);
+        }
+
+        public void Clear()
+        {
+            Value = String.Empty;
+        }
+
+        public void RemoveLastChar()
+        {
+            if (!String.IsNullOrEmpty(Value))
+                Value = Value.Remove(Value.Length - 1);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+
         private void ReadKeyboardLayout(string layoutName)
         {
             using (StreamReader stream = new StreamReader(_layoutsDirectoryRoot + layoutName + _layoutsFileExtension))
@@ -73,27 +96,5 @@ namespace OSProject.ViewModels
         {
             CurrentLayout = Layouts.First(x => x.Name == layoutName);
         }
-
-        public void Clear()
-        {
-            Value = String.Empty;
-        }
-        public void RemoveLastChar()
-        {
-            if (!String.IsNullOrEmpty(Value))
-                Value = Value.Remove(Value.Length - 1);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-
-        public char GetConfiguredCharacter(int characterId)
-        {
-            return _layoutConfig.GetCharacterById(characterId);
-        }
-
     }
 }
