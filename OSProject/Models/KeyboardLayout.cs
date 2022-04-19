@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -6,27 +7,24 @@ using System.Linq;
 
 namespace OSProject.Models
 {
+    [JsonObject]
     public class KeyboardLayout : IEnumerable<List<KeyboardButton>>
     {
+        [JsonProperty]
         public string Name
         {
             get => _name;
             set => _name = value;
         }
 
+        [JsonIgnore]
         private string _name;
+        [JsonProperty("Lines")]
         private List<List<KeyboardButton>> _lines;
         private static int _maxStringLength = 15;
         private static int _maxStringNumber = 5;
 
-        public char? GetBottonValue(int buttonId)
-        {
-            return _lines.FirstOrDefault(line =>
-                    line.Any(button => button.Id == buttonId)
-                )
-                ?.FirstOrDefault(button => button.Id == buttonId)
-                ?.Value;
-        }
+        
 
         public KeyboardLayout(string name, StreamReader stream)
         {
@@ -86,6 +84,23 @@ namespace OSProject.Models
                     lastLineIndex++;
                 }
             }
+        }
+
+        public KeyboardLayout(string name, List<List<KeyboardButton>> lines)
+            => (Name, _lines) = (name, lines);
+        public KeyboardLayout()
+        {
+            Name = "empty";
+            _lines = new List<List<KeyboardButton>>();
+        }
+
+        public char? GetBottonValue(int buttonId)
+        {
+            return _lines.FirstOrDefault(line =>
+                    line.Any(button => button.Id == buttonId)
+                )
+                ?.FirstOrDefault(button => button.Id == buttonId)
+                ?.Value;
         }
 
         public IEnumerator<List<KeyboardButton>> GetEnumerator()

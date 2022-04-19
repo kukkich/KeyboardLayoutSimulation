@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using OSProject.Models;
 using OSProject.Models.UI;
 using OSProject.ViewModels;
@@ -21,6 +22,22 @@ namespace OSProject
 
         public MainWindow()
         {
+
+            var layout = new KeyboardLayout("бебра", 
+                new List<List<KeyboardButton>>
+            {
+                new List<KeyboardButton>() { new KeyboardButton(1, 'x'), new KeyboardButton(2, 'l')},
+                new List<KeyboardButton>() { new KeyboardButton(3, 'g') }
+            });
+
+            string json = JsonConvert.SerializeObject(layout, Formatting.Indented);
+            Console.WriteLine(json);
+
+            JsonSerializerSettings settings = new JsonSerializerSettings() { Formatting = Formatting.Indented};
+
+            var newLayout = JsonConvert.DeserializeObject<KeyboardLayout>(json, settings);
+            
+            
             InitializeComponent();
             this.ResizeMode = ResizeMode.NoResize;
 
