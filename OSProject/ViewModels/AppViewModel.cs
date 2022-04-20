@@ -86,9 +86,12 @@ namespace OSProject.ViewModels
 
         private void ReadKeyboardLayout(string layoutName)
         {
-            using (StreamReader stream = new StreamReader(_layoutsDirectoryRoot + layoutName + _layoutsFileExtension))
+            if (!layoutName.ToLower().Contains("json"))
             {
-                Layouts.Add(new KeyboardLayout(layoutName, stream));
+                using (StreamReader stream = new StreamReader(_layoutsDirectoryRoot + layoutName + _layoutsFileExtension))
+                {
+                    Layouts.Add(new KeyboardLayout(layoutName, stream));
+                }
             }
         }
 

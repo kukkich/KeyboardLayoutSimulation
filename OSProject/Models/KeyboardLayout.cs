@@ -21,10 +21,6 @@ namespace OSProject.Models
         private string _name;
         [JsonProperty("Lines")]
         private List<List<KeyboardButton>> _lines;
-        private static int _maxStringLength = 15;
-        private static int _maxStringNumber = 5;
-
-        
 
         public KeyboardLayout(string name, StreamReader stream)
         {
@@ -38,9 +34,6 @@ namespace OSProject.Models
             int lastButtonId = 0;
             while (!stream.EndOfStream)
             {
-                if (lastLineIndex > _maxStringNumber)
-                    throw new ArgumentException("To much strings", nameof(stream));
-
                 var str = stream.ReadLine();
                 if (!String.IsNullOrEmpty(str))
                 {
@@ -58,7 +51,6 @@ namespace OSProject.Models
         public KeyboardLayout(string name, string text)
         {
             if (String.IsNullOrEmpty(name)) throw new ArgumentException("Пустое имя", nameof(name));
-
             if (String.IsNullOrEmpty(text)) throw new ArgumentException("Пустая строка", nameof(text));
 
             _name = name;
@@ -68,11 +60,6 @@ namespace OSProject.Models
             int lastButtonId = 0;
             foreach (string str in text.Split('\n'))
             {
-                if (str.Length > _maxStringLength)
-                    throw new ArgumentException(str, nameof(text));
-                if (lastLineIndex > _maxStringNumber)
-                    throw new ArgumentException("Много строк в раскладке", nameof(text));
-
                 if (!String.IsNullOrEmpty(str))
                 {
                     _lines.Add(new List<KeyboardButton>());
