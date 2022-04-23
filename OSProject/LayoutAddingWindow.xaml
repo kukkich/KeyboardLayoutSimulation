@@ -4,9 +4,38 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OSProject"
+        xmlns:viewmodels="clr-namespace:OSProject.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:LayoutAddingViewModel}"
         mc:Ignorable="d"
         Title="LayoutAddingWindow" Height="450" Width="800">
     <Grid>
-        <Button MaxHeight="35" Width="100" Click="AddButton_Click"> Добавить </Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0"
+            MaxHeight="35" Width="100" Click="AddButton_Click">
+            Добавить
+        </Button>
+        <ScrollViewer Grid.Column="1">
+            <ListBox SelectionChanged="ButtonsList_SelectionChanged" x:Name="buttonsList"
+                    ItemsSource="{Binding Buttons}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Height="40">
+                            <TextBlock Width="40" VerticalAlignment="Center" TextAlignment="Center"
+                                       FontSize="20" 
+                                       Background="LightSalmon" 
+                                       Text="{Binding Path=Value}"/>
+                            <TextBlock Width="40" VerticalAlignment="Center" TextAlignment="Center"
+                                       Margin="10 0 0 0"
+                                       FontSize="20" 
+                                       Background="Aqua"
+                                       Text="{Binding Path=Id}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
     </Grid>
 </Window>

@@ -75,6 +75,7 @@ namespace OSProject.Models
 
         public KeyboardLayout(string name, List<List<KeyboardButton>> lines)
             => (Name, _lines) = (name, lines);
+
         public KeyboardLayout()
         {
             Name = "empty";

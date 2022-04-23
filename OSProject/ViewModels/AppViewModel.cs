@@ -30,7 +30,7 @@ namespace OSProject.ViewModels
         }
         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
 
-        private DefaultKeyboardLayoutConfig _layoutConfig;
+        public readonly DefaultKeyboardLayoutConfig LayoutConfig;
         private string _value;
         private KeyboardLayout _currentLayout;
         private DirectoryInfo _rootDirectory;
@@ -39,7 +39,7 @@ namespace OSProject.ViewModels
 
         public AppViewModel(string content, DefaultKeyboardLayoutConfig defaultLayoutConfig)
         {
-            _layoutConfig = defaultLayoutConfig;
+            LayoutConfig = defaultLayoutConfig;
             Value = content;
             Layouts = new ObservableCollection<KeyboardLayout>();
             _rootDirectory = new DirectoryInfo(_layoutsDirectoryRoot);
@@ -63,7 +63,7 @@ namespace OSProject.ViewModels
 
         public char GetConfiguredCharacter(int characterId)
         {
-            return _layoutConfig.GetCharacterById(characterId);
+            return LayoutConfig.GetCharacterById(characterId);
         }
 
         public void Clear()

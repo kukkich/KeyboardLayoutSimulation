@@ -152,7 +152,7 @@ namespace OSProject
 
         private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
-            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow();
+            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutConfig);
 
             if (layoutAddingWindow.ShowDialog() == true)
             {
