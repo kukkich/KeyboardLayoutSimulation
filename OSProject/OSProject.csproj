@@ -141,12 +141,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ButtonValueChangingWindow.xaml.cs">
+      <DependentUpon>ButtonValueChangingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LayoutAddingWindow.xaml.cs">
       <DependentUpon>LayoutAddingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ButtonSetting.cs" />
     <Compile Include="Models\DefaultKeyboardLayoutConfig.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
+    <Compile Include="ViewModels\ButtonValueChangingViewModel.cs" />
     <Compile Include="ViewModels\LayoutAddingViewModel.cs" />
+    <Page Include="ButtonValueChangingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LayoutAddingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

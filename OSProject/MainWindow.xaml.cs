@@ -22,7 +22,7 @@ namespace OSProject
 
         public MainWindow()
         {
-            #region Serializing and Derialize
+            #region Serializing and Derializing
             var layout = new KeyboardLayout(
                 "бебра",
                 new List<List<KeyboardButton>>
@@ -38,7 +38,6 @@ namespace OSProject
 
             var newLayout = JsonConvert.DeserializeObject<KeyboardLayout>(json, settings);
             #endregion
-
 
 
             InitializeComponent();
@@ -157,7 +156,6 @@ namespace OSProject
             if (layoutAddingWindow.ShowDialog() == true)
             {
                 MessageBox.Show("Ультра харош!");
-
             }
             else
             {
