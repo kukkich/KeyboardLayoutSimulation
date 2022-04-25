@@ -197,7 +197,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="appsettings.json" />
-    <None Include="Layouts\EngJSON.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -208,10 +207,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Layouts\Eng.txt" />
+    <None Include="Layouts\Eng.json" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Layouts\Rus.txt" />
+    <None Include="Layouts\Rus.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using OSProject.Extensions;
+using Newtonsoft.Json;
 
 namespace OSProject.ViewModels
 {
@@ -36,7 +37,6 @@ namespace OSProject.ViewModels
         private KeyboardLayout _currentLayout;
         private DirectoryInfo _rootDirectory;
         private string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
-        private string _layoutsFileExtension = ".txt";
 
         public AppViewModel(string content, DefaultKeyboardLayoutConfig defaultLayoutConfig)
         {
@@ -86,17 +86,11 @@ namespace OSProject.ViewModels
 
         private void ReadKeyboardLayout(FileInfo file)
         {
-            string layoutName = file.NameWithoutExtension();
-            if (!file.Extension.Equals(".json"))
+            using (StreamReader stream = new StreamReader(file.FullName))
             {
-                using (StreamReader stream = new StreamReader(_layoutsDirectoryRoot + layoutName + _layoutsFileExtension))
-                {
-                    Layouts.Add(new KeyboardLayout(layoutName, stream));
-                }
-            }
-            else
-            {
-                // обработка Json
+                JsonSerializerSettings settings = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+                KeyboardLayout newLayout = JsonConvert.DeserializeObject<KeyboardLayout>(stream.ReadToEnd(), settings);
+                Layouts.Add(newLayout);
             }
         }
 
