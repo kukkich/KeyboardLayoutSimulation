@@ -22,24 +22,6 @@ namespace OSProject
 
         public MainWindow()
         {
-            #region Serializing and Derializing
-            var layout = new KeyboardLayout(
-                "бебра",
-                new List<List<KeyboardButton>>
-            {
-                new List<KeyboardButton>() { new KeyboardButton(1, 'x'), new KeyboardButton(2, 'l')},
-                new List<KeyboardButton>() { new KeyboardButton(3, 'g') }
-            });
-
-            string json = JsonConvert.SerializeObject(layout, Formatting.Indented);
-            //Console.WriteLine(json);
-
-            JsonSerializerSettings settings = new JsonSerializerSettings() { Formatting = Formatting.Indented };
-
-            var newLayout = JsonConvert.DeserializeObject<KeyboardLayout>(json, settings);
-            #endregion
-
-
             InitializeComponent();
             this.ResizeMode = ResizeMode.NoResize;
 
@@ -56,8 +38,6 @@ namespace OSProject
             textBlock.DataContext = _viewModel;
             keyboardLayoutsPanel.DataContext = _viewModel;
 
-            // Считать сразу всё из файла и подставлять нужную раскладку
-            // в зависимости от выбранного чекбокса
             _viewModel.UpdateLayouts();
             _viewModel.SetLayout("Eng");
             ShowKeyboard();
