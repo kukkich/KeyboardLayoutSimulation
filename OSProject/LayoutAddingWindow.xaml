@@ -13,11 +13,21 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="6*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Column="0" Grid.Row="0"
             MaxHeight="35" Width="100" Click="AddButton_Click">
             Добавить
         </Button>
-        <ScrollViewer Grid.Column="1">
+        <TextBox x:Name="nameTextField" Grid.Column="0" Grid.Row="1"
+                 FontSize="25" TextWrapping="NoWrap" TextAlignment="Center" VerticalAlignment="Center"
+                 Margin="10 0 0 10"
+            MaxHeight="35" Text="{Binding Path=NewLayoutName}">
+        </TextBox>
+        <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
             <ListBox x:Name="buttonsList"
                     ItemsSource="{Binding ButtonsSetting}" 
                      >

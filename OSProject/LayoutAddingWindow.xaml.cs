@@ -19,13 +19,21 @@ namespace OSProject
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
+            nameTextField.DataContext = ViewModel;
             buttonsList.DataContext = ViewModel;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.CreateNewLayout();
-            this.DialogResult = true;
+            try
+            {
+                ViewModel.CreateNewLayout();
+                this.DialogResult = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void ChangeValueButton_Click(object sender, RoutedEventArgs e)

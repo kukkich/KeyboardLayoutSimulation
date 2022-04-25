@@ -13,6 +13,7 @@ namespace OSProject.ViewModels
 {
     public class LayoutAddingViewModel : INotifyPropertyChanged
     {
+        // !TODO добавить возможность сделать все значения кнопок null-м
         public DefaultKeyboardLayoutConfig LayoutConfig { get => _layoutConfig; }
         public string NewLayoutName
         {
@@ -27,23 +28,20 @@ namespace OSProject.ViewModels
 
         private string _newLayoutName;
         private DefaultKeyboardLayoutConfig _layoutConfig;
-        private DirectoryInfo _rootDirectory;
         private string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
 
         public LayoutAddingViewModel(DefaultKeyboardLayoutConfig layoutConfig)
         {
+            if (layoutConfig is null)
+                throw new ArgumentNullException(nameof(layoutConfig));
+
             _layoutConfig = layoutConfig;
             NewLayoutName = "Название";
             ButtonsSetting = new ObservableCollection<ButtonSetting>();
             foreach (var line in _layoutConfig.GetDefaultLayout())
-            {
                 foreach (KeyboardButton button in line)
-                {
                     ButtonsSetting.Add(new ButtonSetting(button, _layoutConfig.GetCharacterById(button.Id)));
-                    //button.Value = null;
-                }
-            }
-            _rootDirectory = new DirectoryInfo(_layoutsDirectoryRoot);
+
         }
 
         public List<KeyboardButton> GetButtons()
@@ -61,6 +59,15 @@ namespace OSProject.ViewModels
 
         public void CreateNewLayout()
         {
+            if (String.IsNullOrEmpty(_newLayoutName))
+            {
+                throw new InvalidOperationException("Имя раскаладки должо быть не пустым");
+            }
+            if (!ButtonsSetting.Any(setting => !(setting.SettedValue is null)))
+            {
+                throw new InvalidOperationException("Хотя бы одна кнопка должна быть не пустой");
+            }
+
             var builder = new List<List<KeyboardButton>>();
 
             int buttonId = 0;
@@ -69,20 +76,19 @@ namespace OSProject.ViewModels
                 var line = new List<KeyboardButton>();
                 for (int i = 0; i < str.Length; i++)
                 {
-                    line.Add(new KeyboardButton(buttonId, ButtonsSetting[buttonId].SettedValue));
+                    if (!(ButtonsSetting[buttonId].SettedValue is null))
+                    {
+                        line.Add(new KeyboardButton(buttonId, ButtonsSetting[buttonId].SettedValue));
+                    }
                     buttonId++;
                 }
                 builder.Add(line);
             }
             KeyboardLayout layout = new KeyboardLayout(_newLayoutName, builder);
 
-            string json = JsonConvert.SerializeObject(layout, Formatting.Indented);
-
-            string path = Path.Combine(_layoutsDirectoryRoot, _newLayoutName);
-
             File.WriteAllText(
                 Path.Combine(_layoutsDirectoryRoot, _newLayoutName + ".json"),
-                json
+                JsonConvert.SerializeObject(layout, Formatting.Indented)
             );
         }
 
