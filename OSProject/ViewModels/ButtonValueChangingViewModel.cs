@@ -1,21 +1,17 @@
 ﻿using OSProject.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OSProject.ViewModels
 {
     public class ButtonValueChangingViewModel : INotifyPropertyChanged
     {
-        private ButtonSetting _buttonSetting { get; set; }
-
-        public string NewValue { 
+        public string NewValue
+        {
             get => _newValue;
-            set {
+            set
+            {
                 if (value.Length < 2)
                 {
                     _newValue = value;
@@ -23,8 +19,10 @@ namespace OSProject.ViewModels
                 }
             }
         }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private string _newValue;
+        private ButtonSetting _buttonSetting;
 
         public ButtonValueChangingViewModel(ButtonSetting buttonSetting) =>
             (_buttonSetting, _newValue) = (buttonSetting, buttonSetting.SettedValue.ToString());
@@ -33,8 +31,6 @@ namespace OSProject.ViewModels
         {
             _buttonSetting.SettedValue = String.IsNullOrEmpty(_newValue) ? (char?)null : _newValue[0];
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string prop = "")
         {

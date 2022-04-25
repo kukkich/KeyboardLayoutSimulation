@@ -1,12 +1,11 @@
-﻿using OSProject.Models;
+﻿using Newtonsoft.Json;
+using OSProject.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using OSProject.Extensions;
-using Newtonsoft.Json;
 
 namespace OSProject.ViewModels
 {
@@ -31,8 +30,9 @@ namespace OSProject.ViewModels
             }
         }
         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
-
         public readonly DefaultKeyboardLayoutConfig LayoutConfig;
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private string _value;
         private KeyboardLayout _currentLayout;
         private DirectoryInfo _rootDirectory;
@@ -77,8 +77,6 @@ namespace OSProject.ViewModels
                 Value = Value.Remove(Value.Length - 1);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
@@ -92,11 +90,6 @@ namespace OSProject.ViewModels
                 KeyboardLayout newLayout = JsonConvert.DeserializeObject<KeyboardLayout>(stream.ReadToEnd(), settings);
                 Layouts.Add(newLayout);
             }
-        }
-
-        private void ChangeLayout(string layoutName)
-        {
-            CurrentLayout = Layouts.First(x => x.Name == layoutName);
         }
     }
 }

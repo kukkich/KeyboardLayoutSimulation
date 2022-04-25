@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using OSProject.Models;
 using OSProject.Models.UI;
 using OSProject.ViewModels;
@@ -14,8 +13,7 @@ namespace OSProject
 {
     public partial class MainWindow : Window
     {
-        // Добавить ViewModel для добавления новой раскладки
-        private AppViewModel _viewModel;
+        private readonly AppViewModel _viewModel;
         private static readonly Size _buttonSize = new Size(40, 40);
         private static readonly double _buttonHorizontalSpaceBetween = 10;
         private static readonly double _buttonVerticalSpaceBetween = 10;
@@ -110,15 +108,6 @@ namespace OSProject
             _viewModel.RemoveLastChar();
         }
 
-        private void ReadLayouts()
-        {
-
-        }
-
-        private void ShowLayoutsPanel()
-        {
-        }
-
         private void KeyboardLayoutsPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.Source is Selector selectedItem &&
@@ -134,15 +123,7 @@ namespace OSProject
             LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutConfig);
 
             if (layoutAddingWindow.ShowDialog() == true)
-            {
-                MessageBox.Show("Ультра харош!");
                 _viewModel.UpdateLayouts();
-            }
-            else
-            {
-                MessageBox.Show("Вы мистер лох");
-            }
-
         }
     }
 }

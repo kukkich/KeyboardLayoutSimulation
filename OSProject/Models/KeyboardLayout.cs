@@ -22,32 +22,6 @@ namespace OSProject.Models
         [JsonProperty("Lines")]
         private List<List<KeyboardButton>> _lines;
 
-        public KeyboardLayout(string name, StreamReader stream)
-        {
-            if (String.IsNullOrEmpty(name)) throw new ArgumentException("Пустое имя", nameof(name));
-            if (stream is null) throw new ArgumentNullException(nameof(stream));
-
-            _name = name;
-            _lines = new List<List<KeyboardButton>>();
-
-            int lastLineIndex = 0;
-            int lastButtonId = 0;
-            while (!stream.EndOfStream)
-            {
-                var str = stream.ReadLine();
-                if (!String.IsNullOrEmpty(str))
-                {
-                    _lines.Add(new List<KeyboardButton>());
-                    foreach (char sym in str)
-                    {
-                        _lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
-                        lastButtonId++;
-                    }
-                    lastLineIndex++;
-                }
-            }
-        }
-
         public KeyboardLayout(string name, string text)
         {
             if (String.IsNullOrEmpty(name)) throw new ArgumentException("Пустое имя", nameof(name));
@@ -73,14 +47,15 @@ namespace OSProject.Models
             }
         }
 
-        public KeyboardLayout(string name, List<List<KeyboardButton>> lines)
-            => (Name, _lines) = (name, lines);
-
+        //Required for serialization and deserialization
         public KeyboardLayout()
         {
             Name = "empty";
             _lines = new List<List<KeyboardButton>>();
         }
+
+        public KeyboardLayout(string name, List<List<KeyboardButton>> lines)
+            => (Name, _lines) = (name, lines);
 
         public char? GetBottonValue(int buttonId)
         {

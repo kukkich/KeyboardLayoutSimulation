@@ -7,14 +7,14 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace OSProject.ViewModels
 {
     public class LayoutAddingViewModel : INotifyPropertyChanged
     {
         // !TODO добавить возможность сделать все значения кнопок null-м
-        public DefaultKeyboardLayoutConfig LayoutConfig { get => _layoutConfig; }
+        // !TODO При надобности создать модели для соблюдения уникального нейминга раскладок (такое в теории может понадобится где-то ещё)
+
         public string NewLayoutName
         {
             get => _newLayoutName;
@@ -25,10 +25,11 @@ namespace OSProject.ViewModels
             }
         }
         public ObservableCollection<ButtonSetting> ButtonsSetting { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private string _newLayoutName;
-        private DefaultKeyboardLayoutConfig _layoutConfig;
-        private string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
+        private readonly DefaultKeyboardLayoutConfig _layoutConfig;
+        private readonly string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
 
         public LayoutAddingViewModel(DefaultKeyboardLayoutConfig layoutConfig)
         {
@@ -42,19 +43,6 @@ namespace OSProject.ViewModels
                 foreach (KeyboardButton button in line)
                     ButtonsSetting.Add(new ButtonSetting(button, _layoutConfig.GetCharacterById(button.Id)));
 
-        }
-
-        public List<KeyboardButton> GetButtons()
-        {
-            List<KeyboardButton> buttons = new List<KeyboardButton>();
-            foreach (var line in _layoutConfig.GetDefaultLayout())
-            {
-                foreach (KeyboardButton button in line)
-                {
-                    buttons.Add(button);
-                }
-            }
-            return buttons;
         }
 
         public void CreateNewLayout()
@@ -91,8 +79,6 @@ namespace OSProject.ViewModels
                 JsonConvert.SerializeObject(layout, Formatting.Indented)
             );
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string prop = "")
         {

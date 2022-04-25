@@ -1,33 +1,31 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using OSProject.Models;
+using OSProject.ViewModels;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System;
-using OSProject.Models;
-using OSProject.ViewModels;
 
 namespace OSProject
 {
     public partial class LayoutAddingWindow : Window
     {
-        public LayoutAddingViewModel ViewModel;
+        private readonly LayoutAddingViewModel _viewModel;
 
         public LayoutAddingWindow(DefaultKeyboardLayoutConfig layoutConfig)
         {
-            ViewModel = new LayoutAddingViewModel(layoutConfig);
-            
+            _viewModel = new LayoutAddingViewModel(layoutConfig);
+
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            nameTextField.DataContext = ViewModel;
-            buttonsList.DataContext = ViewModel;
+            nameTextField.DataContext = _viewModel;
+            buttonsList.DataContext = _viewModel;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                ViewModel.CreateNewLayout();
+                _viewModel.CreateNewLayout();
                 this.DialogResult = true;
             }
             catch (Exception ex)

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OSProject.Models
 {
     public class ButtonSetting : INotifyPropertyChanged
     {
         public KeyboardButton Button { get; set; }
-        public char? SettedValue 
-        { 
+        public char? SettedValue
+        {
             get => _settedValue;
             set
             {
@@ -23,10 +18,8 @@ namespace OSProject.Models
 
         private char? _settedValue;
 
-        public ButtonSetting(KeyboardButton button, char? settedValue)
-        {
+        public ButtonSetting(KeyboardButton button, char? settedValue) =>
             (Button, SettedValue) = (button, settedValue);
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
