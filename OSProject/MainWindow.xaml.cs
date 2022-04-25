@@ -32,7 +32,7 @@ namespace OSProject
             });
 
             string json = JsonConvert.SerializeObject(layout, Formatting.Indented);
-            Console.WriteLine(json);
+            //Console.WriteLine(json);
 
             JsonSerializerSettings settings = new JsonSerializerSettings() { Formatting = Formatting.Indented };
 
@@ -156,6 +156,7 @@ namespace OSProject
             if (layoutAddingWindow.ShowDialog() == true)
             {
                 MessageBox.Show("Ультра харош!");
+                _viewModel.UpdateLayouts();
             }
             else
             {

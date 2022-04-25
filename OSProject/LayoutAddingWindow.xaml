@@ -34,9 +34,6 @@
                                 <TextBlock VerticalAlignment="Center" TextAlignment="Center"
                                        Text="{Binding Path=SettedValue}" />
                             </Button>
-                            <TextBlock Width="40"  VerticalAlignment="Center" TextAlignment="Center"
-                                       Text="{Binding Path=Button.Id}" 
-                                       Background="IndianRed" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

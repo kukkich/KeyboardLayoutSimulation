@@ -1,10 +1,13 @@
-﻿using OSProject.Models;
+﻿using Newtonsoft.Json;
+using OSProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace OSProject.ViewModels
 {
@@ -24,6 +27,8 @@ namespace OSProject.ViewModels
 
         private string _newLayoutName;
         private DefaultKeyboardLayoutConfig _layoutConfig;
+        private DirectoryInfo _rootDirectory;
+        private string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
 
         public LayoutAddingViewModel(DefaultKeyboardLayoutConfig layoutConfig)
         {
@@ -38,7 +43,7 @@ namespace OSProject.ViewModels
                     //button.Value = null;
                 }
             }
-
+            _rootDirectory = new DirectoryInfo(_layoutsDirectoryRoot);
         }
 
         public List<KeyboardButton> GetButtons()
@@ -54,11 +59,31 @@ namespace OSProject.ViewModels
             return buttons;
         }
 
-        public void ChangeButtonValue(int buttonId, char? newValue)
+        public void CreateNewLayout()
         {
-            var searchedButton = ButtonsSetting.First(buttonSetting => buttonSetting.Button.Id == buttonId).Button;
-            if (searchedButton is null) throw new ArgumentOutOfRangeException(nameof(buttonId));
-            searchedButton.Value = newValue;
+            var builder = new List<List<KeyboardButton>>();
+
+            int buttonId = 0;
+            foreach (string str in _layoutConfig.Lines)
+            {
+                var line = new List<KeyboardButton>();
+                for (int i = 0; i < str.Length; i++)
+                {
+                    line.Add(new KeyboardButton(buttonId, ButtonsSetting[buttonId].SettedValue));
+                    buttonId++;
+                }
+                builder.Add(line);
+            }
+            KeyboardLayout layout = new KeyboardLayout(_newLayoutName, builder);
+
+            string json = JsonConvert.SerializeObject(layout, Formatting.Indented);
+
+            string path = Path.Combine(_layoutsDirectoryRoot, _newLayoutName);
+
+            File.WriteAllText(
+                Path.Combine(_layoutsDirectoryRoot, _newLayoutName + ".json"),
+                json
+            );
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

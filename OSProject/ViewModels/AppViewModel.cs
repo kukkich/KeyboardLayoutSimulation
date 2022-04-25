@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using OSProject.Extensions;
 
 namespace OSProject.ViewModels
 {
@@ -53,11 +54,10 @@ namespace OSProject.ViewModels
         public void UpdateLayouts()
         {
             var layoutsData = _rootDirectory.GetFiles();
+            Layouts.Clear();
             foreach (var layoutFile in layoutsData)
             {
-                ReadKeyboardLayout(layoutFile.Name.Remove(
-                    layoutFile.Name.Length - _layoutsFileExtension.Length
-                ));
+                ReadKeyboardLayout(layoutFile);
             }
         }
 
@@ -84,14 +84,19 @@ namespace OSProject.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        private void ReadKeyboardLayout(string layoutName)
+        private void ReadKeyboardLayout(FileInfo file)
         {
-            if (!layoutName.ToLower().Contains("json"))
+            string layoutName = file.NameWithoutExtension();
+            if (!file.Extension.Equals(".json"))
             {
                 using (StreamReader stream = new StreamReader(_layoutsDirectoryRoot + layoutName + _layoutsFileExtension))
                 {
                     Layouts.Add(new KeyboardLayout(layoutName, stream));
                 }
+            }
+            else
+            {
+                // обработка Json
             }
         }
 

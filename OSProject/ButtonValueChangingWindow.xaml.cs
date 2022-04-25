@@ -27,6 +27,8 @@ namespace OSProject
             InitializeComponent();
             this.ResizeMode = ResizeMode.NoResize;
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            textField.Focus();
+
             this.DataContext = _viewModel;
         }
 

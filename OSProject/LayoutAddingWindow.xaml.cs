@@ -24,6 +24,7 @@ namespace OSProject
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.CreateNewLayout();
             this.DialogResult = true;
         }
 
