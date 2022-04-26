@@ -10,9 +10,9 @@ namespace OSProject
     {
         private readonly LayoutAddingViewModel _viewModel;
 
-        public LayoutAddingWindow(DefaultKeyboardLayoutConfig layoutConfig)
+        public LayoutAddingWindow(DefaultKeyboardLayoutConfig layoutConfig, string layoutsDirectoryRoot)
         {
-            _viewModel = new LayoutAddingViewModel(layoutConfig);
+            _viewModel = new LayoutAddingViewModel(layoutConfig, layoutsDirectoryRoot);
 
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;

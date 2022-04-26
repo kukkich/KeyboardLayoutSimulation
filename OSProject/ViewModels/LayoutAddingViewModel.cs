@@ -29,9 +29,9 @@ namespace OSProject.ViewModels
 
         private string _newLayoutName;
         private readonly DefaultKeyboardLayoutConfig _layoutConfig;
-        private readonly string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
+        private readonly string _layoutsDirectoryRoot;
 
-        public LayoutAddingViewModel(DefaultKeyboardLayoutConfig layoutConfig)
+        public LayoutAddingViewModel(DefaultKeyboardLayoutConfig layoutConfig, string layoutsDirectoryRoot)
         {
             if (layoutConfig is null)
                 throw new ArgumentNullException(nameof(layoutConfig));
@@ -42,7 +42,8 @@ namespace OSProject.ViewModels
             foreach (var line in _layoutConfig.GetDefaultLayout())
                 foreach (KeyboardButton button in line)
                     ButtonsSetting.Add(new ButtonSetting(button, _layoutConfig.GetCharacterById(button.Id)));
-
+            
+            _layoutsDirectoryRoot = layoutsDirectoryRoot;
         }
 
         public void CreateNewLayout()

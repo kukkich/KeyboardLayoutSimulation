@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace OSProject.ViewModels
 {
@@ -31,19 +32,26 @@ namespace OSProject.ViewModels
         }
         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
         public readonly DefaultKeyboardLayoutConfig LayoutConfig;
+        public readonly string LayoutsDirectoryRoot;
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _value;
         private KeyboardLayout _currentLayout;
-        private DirectoryInfo _rootDirectory;
-        private string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
+        private readonly DirectoryInfo _rootDirectory;
 
         public AppViewModel(string content, DefaultKeyboardLayoutConfig defaultLayoutConfig)
         {
             LayoutConfig = defaultLayoutConfig;
             Value = content;
             Layouts = new ObservableCollection<KeyboardLayout>();
-            _rootDirectory = new DirectoryInfo(_layoutsDirectoryRoot);
+
+            string appRoot = AppDomain.CurrentDomain.BaseDirectory;
+            LayoutsDirectoryRoot = new DirectoryInfo(appRoot).Parent.Parent
+                .GetDirectories()
+                .First(directory => directory.Name == "Layouts")
+                .FullName;
+
+            _rootDirectory = new DirectoryInfo(LayoutsDirectoryRoot);
         }
 
         public void SetLayout(string name)

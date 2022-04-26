@@ -3,6 +3,7 @@ using OSProject.Models;
 using OSProject.Models.UI;
 using OSProject.ViewModels;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -29,7 +30,6 @@ namespace OSProject
             DefaultKeyboardLayoutConfig layoutConfig = config
                 .GetSection(nameof(DefaultKeyboardLayoutConfig))
                 .Get<DefaultKeyboardLayoutConfig>();
-
 
             _viewModel = new AppViewModel("Зелибиба", layoutConfig);
 
@@ -120,7 +120,7 @@ namespace OSProject
 
         private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
-            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutConfig);
+            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutConfig, _viewModel.LayoutsDirectoryRoot);
 
             if (layoutAddingWindow.ShowDialog() == true)
                 _viewModel.UpdateLayouts();
