@@ -48,8 +48,14 @@ namespace OSProject.ViewModels
             string appRoot = AppDomain.CurrentDomain.BaseDirectory;
             LayoutsDirectoryRoot = new DirectoryInfo(appRoot).Parent.Parent
                 .GetDirectories()
-                .First(directory => directory.Name == "Layouts")
-                .FullName;
+                .FirstOrDefault(directory => directory.Name == "Layouts")
+                ?.FullName;
+
+            if (LayoutsDirectoryRoot is null)
+            {
+                MessageBox.Show("Нет дирректории Layouts");
+                System.Environment.Exit(1);
+            }
 
             _rootDirectory = new DirectoryInfo(LayoutsDirectoryRoot);
         }

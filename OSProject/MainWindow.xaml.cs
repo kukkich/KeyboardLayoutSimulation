@@ -31,7 +31,7 @@ namespace OSProject
                 .GetSection(nameof(DefaultKeyboardLayoutConfig))
                 .Get<DefaultKeyboardLayoutConfig>();
 
-            _viewModel = new AppViewModel("Зелибиба", layoutConfig);
+            _viewModel = new AppViewModel("Ваш текст", layoutConfig);
 
             textBlock.DataContext = _viewModel;
             keyboardLayoutsPanel.DataContext = _viewModel;
