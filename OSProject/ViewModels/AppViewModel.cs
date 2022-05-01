@@ -70,9 +70,11 @@ namespace OSProject.ViewModels
             var layoutsData = _rootDirectory.GetFiles();
             Layouts.Clear();
             foreach (var layoutFile in layoutsData)
-            {
+            { 
                 ReadKeyboardLayout(layoutFile);
             }
+            CurrentLayout = Layouts.First();
+            OnPropertyChanged(nameof(CurrentLayout));
         }
 
         public char GetConfiguredCharacter(int characterId)

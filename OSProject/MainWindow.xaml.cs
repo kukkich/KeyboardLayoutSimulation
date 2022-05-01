@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
@@ -18,6 +19,8 @@ namespace OSProject
         private static readonly Size _buttonSize = new Size(40, 40);
         private static readonly double _buttonHorizontalSpaceBetween = 10;
         private static readonly double _buttonVerticalSpaceBetween = 10;
+        private SolidColorBrush _keyboardButtonColor;
+        private SolidColorBrush _keyboardButtonforegroud;
 
         public MainWindow()
         {
@@ -38,6 +41,9 @@ namespace OSProject
 
             _viewModel.UpdateLayouts();
             _viewModel.SetLayout("Eng");
+
+            SetColors();
+
             ShowKeyboard();
         }
 
@@ -50,6 +56,12 @@ namespace OSProject
                 ShowKeyboardLine(line, lineNumber);
                 lineNumber++;
             }
+        }
+
+        private void SetColors()
+        {
+            _keyboardButtonColor = (SolidColorBrush)new BrushConverter().ConvertFromString("#1c6dd0");
+            _keyboardButtonforegroud = (SolidColorBrush)new BrushConverter().ConvertFromString("#ffffff");
         }
 
         private void ShowKeyboardLine(List<KeyboardButton> line, int lineNumber)
@@ -71,9 +83,14 @@ namespace OSProject
                     Height = _buttonSize.Height
                 };
 
-                // it migth need in fixing 
+
                 UIbutton.AddOrChangeValue("BindedValue", button.Value);
                 UIbutton.AddOrChangeValue("Id", button.Id);
+
+                UIbutton.Foreground = _keyboardButtonforegroud;
+                UIbutton.Background = _keyboardButtonColor;
+                UIbutton.FontSize += 2;
+                UIbutton.FontFamily = new FontFamily("Arial Rounded MT Bold");
 
                 UIbutton.SetValue(
                     Canvas.LeftProperty,
@@ -122,8 +139,15 @@ namespace OSProject
         {
             LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutConfig, _viewModel.LayoutsDirectoryRoot);
 
+            var previousLayout = _viewModel.CurrentLayout;
             if (layoutAddingWindow.ShowDialog() == true)
                 _viewModel.UpdateLayouts();
+
+        }
+
+        private void textBlock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

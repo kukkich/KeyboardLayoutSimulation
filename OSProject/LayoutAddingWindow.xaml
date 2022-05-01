@@ -8,7 +8,34 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:LayoutAddingViewModel}"
         mc:Ignorable="d"
         Title="LayoutAddingWindow" Height="450" Width="800">
-    <Grid>
+    <Window.Resources>
+        <Style x:Key="_ButtonSettingItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="_Border">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHitTestVisible" Value="True">
+                                <Setter TargetName="_Border" Property="Background" Value="#EDE6EE"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="_Border" Property="Background" Value="#FFD0C4D0"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="#8089b4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontFamily" Value="Arial Rounded MT Bold">
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Background="#EDE6EE">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="3*"/>
@@ -19,29 +46,35 @@
             <RowDefinition Height="6*"/>
         </Grid.RowDefinitions>
         <Button Grid.Column="0" Grid.Row="0"
-            MaxHeight="35" Width="100" Click="AddButton_Click">
-            Добавить
+            MaxHeight="40" Width="112" Click="AddButton_Click" HorizontalAlignment="Center"
+                FontSize="16" FontWeight="Normal" FontStyle="Normal"
+                Background="#FF2D46B9" 
+                Foreground="#FFF8F8F8" FontFamily="Arial Rounded MT Bold" Margin="0,0,0,156" Grid.RowSpan="2">
+            Сохранить
         </Button>
         <TextBox x:Name="nameTextField" Grid.Column="0" Grid.Row="1"
-                 FontSize="25" TextWrapping="NoWrap" TextAlignment="Center" VerticalAlignment="Center"
-                 Margin="10 0 0 10"
-            MaxHeight="35" Text="{Binding Path=NewLayoutName}">
+                 FontSize="25" TextWrapping="NoWrap" TextAlignment="Center" VerticalAlignment="Top"
+                 Margin="10,55,10,0" Foreground="#FF2E766A" FontFamily="Arial Rounded MT Bold"
+            MaxHeight="35" Text="{Binding Path=NewLayoutName}" Background="#FFFFB830">
         </TextBox>
-        <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
-            <ListBox x:Name="buttonsList"
-                    ItemsSource="{Binding ButtonsSetting}" 
+        <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Padding="5" Margin="10">
+            <ListBox Background="#EDE6EE" x:Name="buttonsList"
+                    ItemsSource="{Binding ButtonsSetting}" ItemContainerStyle="{DynamicResource _ButtonSettingItemStyle}"
                      >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Height="40">
+                        <StackPanel Orientation="Horizontal" Height="40" Margin="10 5 10 5">
                             <TextBlock Width="40" VerticalAlignment="Center" TextAlignment="Center"
-                                       FontSize="20" 
-                                       Background="LightSalmon" 
+                                       FontSize="20" FontFamily="Arial Rounded MT Bold"
+                                       Background="#ff2442" 
                                        Text="{Binding Path=Button.Value}"/>
-                            <Button Margin="15 0 0 0" FontSize="20" Background="Aqua" Width="40" 
+                            <Button Margin="15 0 0 0" FontSize="20" Background="#3db2ff" Width="40" 
                                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                                     
+                                    Foreground="#ffedda"
                                     Click="ChangeValueButton_Click">
                                 <TextBlock VerticalAlignment="Center" TextAlignment="Center"
+                                           FontFamily="Arial Rounded MT Bold" FontSize="20"
                                        Text="{Binding Path=SettedValue}" />
                             </Button>
                         </StackPanel>

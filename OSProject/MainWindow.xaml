@@ -9,57 +9,172 @@
         x:Name="mainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="765" Width="1270">
-    <Grid>
+    <Window.Resources>
+        <Style x:Key="_ListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="_Border">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="_Border" Property="Background" Value="#ffedda"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="#F3d24e"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontFamily" Value="Arial Rounded MT Bold">
+            </Setter>
+        </Style>
+
+        <Style x:Key="_BackspaceButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Arial Rounded MT Bold"/>
+            <Setter Property="Foreground" Value="#FF1C6DD0"/>
+            <Setter Property="Background" Value="#FFFED1EF" />
+            <Setter Property="BorderBrush" Value="#001C6DD0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Margin" Value="10 10 10 10" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="Foreground" Value="AliceBlue"></Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True" >
+                    <Setter Property="Background" Value="Green" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+    
+    <Grid x:Name="mainGrid" Background="#FFEDEAED">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="0.8*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="160*"/>
+            <ColumnDefinition  Width="160*"/>
             <ColumnDefinition Width="900*"/>
             <ColumnDefinition Width="220*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Grid.Row="0"
-                        Width="100" Height="30" 
-                        Content="Добавить" Click="AddingButton_Click" 
-                        />
+        <Button Grid.Row="0"
+                        Width="120" Height="40" 
+                        Content="Добавить" Click="AddingButton_Click" Background="#FF2D46B9" 
+                Foreground="#FFF8F8F8" FontFamily="Arial Rounded MT Bold" Panel.ZIndex="3" 
+                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,258,0,0" 
+                FontSize="16" FontWeight="Normal" FontStyle="Normal"/>
 
         <DockPanel Grid.Row="0"
-                       Background="Cyan" Grid.ColumnSpan="2" Margin="161,0,0,320" Grid.RowSpan="2">
+                       Background="#0000FFFF" Grid.ColumnSpan="3" Margin="50,0,0,320" Grid.RowSpan="2" Panel.ZIndex="2">
 
-            <DockPanel Margin="30 -50 30 0" Height="70" MaxWidth="830">
+            <DockPanel Margin="30 -50 30 0" Height="192" MaxWidth="830" Width="1007">
                 <TextBox x:Name="textBlock" TextWrapping="Wrap" FontSize="20"  Text="{Binding Path=Value}" 
-                           Height="70" 
-                             Width="730"
-                           Background="LightPink"
+                           Height="95" 
+                             Width="738"
+                           Background="#FFA3E4DB"
                            VerticalScrollBarVisibility="Auto"
-                           HorizontalScrollBarVisibility="Auto"
+                           HorizontalScrollBarVisibility="Auto" Foreground="#FF2E766A"
                            />
-                <DockPanel  Height="70" Margin="10 0 0 0"
+                <DockPanel  Height="77" Margin="20 0 -50 0" Width="108"
                                 >
-                    <Button Click="BackSpaceButton_Click" DockPanel.Dock="Top" Height="24" Padding="0 2 0 2"
-                                Margin="0 5 0 0">
+                    <Button Click="BackSpaceButton_Click" DockPanel.Dock="Top"
+                                Margin="0 2 0 0">
+                        <Button.Style>
+                            <Style  TargetType="Button">
+                                <Setter Property="Height" Value="32"/>
+                                <Setter Property="Padding" Value="0 2 0 2"/>
+                                <Setter Property="FontFamily" Value="Arial Rounded MT Bold"/>
+                                <Setter Property="Foreground" Value="#FF1C6DD0"/>
+                                <Setter Property="BorderBrush" Value="#001C6DD0"/>
+                                <Setter Property="FontSize" Value="16"/>
+                                <Setter Property="Button.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Grid x:Name="Groud" Background="#FFFED1EF">
+                                                <Border Name="Head">
+                                                    <Rectangle HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  />
+                                                </Border>
+                                                <Label Name="NameLable" Content="BackSpace" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF1C6DD0"></Label>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="Groud" Property="Background" Value="#f8f8f8"/>
+                                                    <Setter TargetName="Head" Property="BorderBrush" Value="#f037a5" />
+                                                    <Setter TargetName="Head" Property="BorderThickness" Value="2,2,2,2"/>
+                                                    <Setter TargetName="NameLable" Property="Foreground" Value="#f037a5"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
                         BackSpace
                     </Button>
-                    <Button Click="ClearButton_Click" DockPanel.Dock="Bottom" Height="24" Padding="0 2 0 2" >
+                    
+                    <Button Click="ClearButton_Click" DockPanel.Dock="Bottom" Height="36" Padding="0 2 0 2" 
+                            Margin="0 7 0 0">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="Height" Value="32"/>
+                                <Setter Property="Padding" Value="0 2 0 2"/>
+                                <Setter Property="FontFamily" Value="Arial Rounded MT Bold"/>
+                                <Setter Property="BorderBrush" Value="#001C6DD0"/>
+                                <Setter Property="Button.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Grid x:Name="Groud" Background="#FFF3BEEF">
+                                                <Border Name="Head">
+                                                    <Rectangle HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  />
+                                                </Border>
+                                                <Label Name="NameLable" Content="Clear" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF1C6DD0"></Label>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="Groud" Property="Background" Value="#f8f8f8"/>
+                                                    <Setter TargetName="Head" Property="BorderBrush" Value="#f037a5" />
+                                                    <Setter TargetName="Head" Property="BorderThickness" Value="2,2,2,2"/>
+                                                    <Setter TargetName="NameLable" Property="Foreground" Value="#f037a5"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
                         Clear
                     </Button>
                 </DockPanel>
             </DockPanel>
         </DockPanel>
 
-        <Canvas Grid.Column="1" Grid.Row="1" 
+        <Canvas Grid.Column="1" Grid.Row="1"
                     ButtonBase.Click="KeyboardCanvas_Click"
-                    x:Name="keyboardCanvas" Background="AliceBlue" Grid.ColumnSpan="2" Margin="0,0,217,0">
+                    x:Name="keyboardCanvas" Background="#FFEDEAED" Grid.ColumnSpan="2" Margin="0,0,217,0">
         </Canvas>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="3" >
+        <ScrollViewer Grid.Row="1" Grid.Column="3">
+            <ScrollViewer.Background>
+                <SolidColorBrush Opacity="0"/>
+            </ScrollViewer.Background>
             <ListBox SelectionChanged="KeyboardLayoutsPanel_SelectionChanged" x:Name="keyboardLayoutsPanel" 
-                     ItemsSource="{Binding Layouts}"  SelectedItem="{Binding CurrentLayout}">
+                     ItemsSource="{Binding Layouts}" SelectedItem="{Binding CurrentLayout}" BorderBrush="#FF7EE350"
+                     ItemContainerStyle="{DynamicResource _ListBoxItemStyle}">
+                <ListBox.Background>
+                    <SolidColorBrush Opacity="1" Color="#FFE7F2C6"/>
+                </ListBox.Background>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Margin="4" Text="{Binding Path=Name}"></TextBlock>
+                        <TextBlock Height="20" Margin="4" Text="{Binding Path=Name}" 
+                                   Foreground="#1e3163" FontFamily="Arial Rounded MT Bold" FontSize="16"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
