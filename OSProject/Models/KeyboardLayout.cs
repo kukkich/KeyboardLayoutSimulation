@@ -1,83 +1,45 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OSProject.Models
 {
+    [JsonObject]
     public class KeyboardLayout : IEnumerable<List<KeyboardButton>>
     {
-        // Сделать чтобы клавиши хранились по линиям в List<buttons>
-        // или сделать класс линии, который будет хранить в себе кнопки
-        // Сделать конструктор, принимающий StreamReader
-
+        [JsonProperty]
         public string Name
         {
             get => _name;
             set => _name = value;
         }
+        [JsonProperty("Lines")]
+        public List<List<KeyboardButton>> Lines { get; set; }
 
+        [JsonIgnore]
         private string _name;
-        private List<List<KeyboardButton>> _lines;
-        private static int _maxStringLength = 15;
-        private static int _maxStringNumber = 5;
-
-        public KeyboardLayout(string name, StreamReader stream)
-        {
-            if (String.IsNullOrEmpty(name)) throw new ArgumentException("Пустое имя", nameof(name));
-            if (stream is null) throw new ArgumentNullException(nameof(stream));
-
-            _name = name;
-            _lines = new List<List<KeyboardButton>>();
-
-            int lastLineIndex = 0;
-            int lastButtonId = 0;
-            while (!stream.EndOfStream)
-            {
-                if (lastLineIndex > _maxStringNumber)
-                    throw new ArgumentException("To much strings", nameof(stream));
-
-                var str = stream.ReadLine();
-                if (!String.IsNullOrEmpty(str))
-                {
-                    _lines.Add(new List<KeyboardButton>());
-                    foreach (char sym in str)
-                    {
-                        _lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
-                        lastButtonId++;
-                    }
-                    lastLineIndex++;
-                }
-            }
-        }
 
         public KeyboardLayout(string name, string text)
         {
             if (String.IsNullOrEmpty(name)) throw new ArgumentException("Пустое имя", nameof(name));
-
             if (String.IsNullOrEmpty(text)) throw new ArgumentException("Пустая строка", nameof(text));
 
             _name = name;
-            _lines = new List<List<KeyboardButton>>();
+            Lines = new List<List<KeyboardButton>>();
 
             int lastLineIndex = 0;
             int lastButtonId = 0;
             foreach (string str in text.Split('\n'))
             {
-                if (str.Length > _maxStringLength)
-                    throw new ArgumentException(str, nameof(text));
-                if (lastLineIndex > _maxStringNumber)
-                    throw new ArgumentException("Много строк в раскладке", nameof(text));
-
                 if (!String.IsNullOrEmpty(str))
                 {
-                    _lines.Add(new List<KeyboardButton>());
+                    Lines.Add(new List<KeyboardButton>());
                     foreach (char sym in str)
                     {
-                        _lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
+                        Lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
                         lastButtonId++;
                     }
                     lastLineIndex++;
@@ -85,12 +47,31 @@ namespace OSProject.Models
             }
         }
 
+        //Required for serialization and deserialization
+        public KeyboardLayout()
+        {
+            Name = "empty";
+            Lines = new List<List<KeyboardButton>>();
+        }
+
+        public KeyboardLayout(string name, List<List<KeyboardButton>> lines)
+            => (Name, Lines) = (name, lines);
+
+        public char? GetBottonValue(int buttonId)
+        {
+            return Lines.FirstOrDefault(line =>
+                    line.Any(button => button.Id == buttonId)
+                )
+                ?.FirstOrDefault(button => button.Id == buttonId)
+                ?.Value;
+        }
+
         public IEnumerator<List<KeyboardButton>> GetEnumerator()
-            => _lines.GetEnumerator();
+            => Lines.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)_lines).GetEnumerator();
+            return ((IEnumerable)Lines).GetEnumerator();
         }
     }
 }

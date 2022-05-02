@@ -1,59 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
+using OSProject.Models;
+using OSProject.Models.Config;
+using OSProject.Models.UI;
+using OSProject.ViewModels;
+using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using OSProject.Models;
-using OSProject.ViewModels;
 
 namespace OSProject
 {
     public partial class MainWindow : Window
     {
-        // Добавить ViewModel для добавления новой раскладки
-        private AppViewModel ViewModel { get; set; }
-
+        private readonly AppViewModel _viewModel;
         private static readonly Size _buttonSize = new Size(40, 40);
         private static readonly double _buttonHorizontalSpaceBetween = 10;
         private static readonly double _buttonVerticalSpaceBetween = 10;
+        private SolidColorBrush _keyboardButtonColor;
+        private SolidColorBrush _keyboardButtonforegroud;
 
         public MainWindow()
         {
             InitializeComponent();
             this.ResizeMode = ResizeMode.NoResize;
 
-            ViewModel = new AppViewModel("Зелибиба");
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-            textBlock.DataContext = ViewModel;
-            keyboardLayoutsPanel.DataContext = ViewModel;
+            LayoutsConfig layoutsConfig = config.GetRequiredSection(nameof(LayoutsConfig)).Get<LayoutsConfig>();
+            
+            _viewModel = new AppViewModel("Ваш текст", layoutsConfig);
 
-            // Считать сразу всё из файла и подставлять нужную раскладку
-            // в зависимости от выбранного чекбокса
-            ViewModel.UpdateLayouts();
-            ViewModel.SetLayout("Eng");
-            ShowKeyboardButtons();
+            textBlock.DataContext = _viewModel;
+            keyboardLayoutsPanel.DataContext = _viewModel;
+
+            _viewModel.UpdateLayouts();
+            _viewModel.SetLayout("Eng");
+
+            SetColors();
+
+            ShowKeyboard();
         }
 
-        private void ShowKeyboardButtons()
+        private void ShowKeyboard()
         {
             keyboardCanvas.Children.Clear();
             int lineNumber = 0;
-            foreach (List<KeyboardButton> line in ViewModel.CurrentLayout)
+            foreach (List<KeyboardButton> line in _viewModel.CurrentLayout)
             {
                 ShowKeyboardLine(line, lineNumber);
                 lineNumber++;
             }
+        }
+
+        private void SetColors()
+        {
+            _keyboardButtonColor = (SolidColorBrush)new BrushConverter().ConvertFromString("#1c6dd0");
+            _keyboardButtonforegroud = (SolidColorBrush)new BrushConverter().ConvertFromString("#ffffff");
         }
 
         private void ShowKeyboardLine(List<KeyboardButton> line, int lineNumber)
@@ -67,16 +76,26 @@ namespace OSProject
 
             foreach (KeyboardButton button in line)
             {
-                Button UIbutton = new Button
+
+                DataButton UIbutton = new DataButton
                 {
-                    Content = button.Value,
+                    Content = _viewModel.GetConfiguredCharacter(button.Id),
                     Width = _buttonSize.Width,
                     Height = _buttonSize.Height
                 };
 
+
+                UIbutton.AddOrChangeValue("BindedValue", button.Value);
+                UIbutton.AddOrChangeValue("Id", button.Id);
+
+                UIbutton.Foreground = _keyboardButtonforegroud;
+                UIbutton.Background = _keyboardButtonColor;
+                UIbutton.FontSize += 2;
+                UIbutton.FontFamily = new FontFamily("Arial Rounded MT Bold");
+
                 UIbutton.SetValue(
                     Canvas.LeftProperty,
-                    lineButtonNumber * (_buttonHorizontalSpaceBetween + _buttonSize.Width) + 
+                    lineButtonNumber * (_buttonHorizontalSpaceBetween + _buttonSize.Width) +
                     linePadding
                 );
                 UIbutton.SetValue(
@@ -89,30 +108,22 @@ namespace OSProject
             }
         }
 
-        private void Canvas_Click(object sender, RoutedEventArgs e)
+        private void KeyboardCanvas_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Source is Button button)
+            if (e.Source is DataButton button)
             {
-                ViewModel.Value += button.Content;
+                _viewModel.Value += _viewModel.CurrentLayout.GetBottonValue((int)button.GetData("Id"));
             }
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Clear();
+            _viewModel.Clear();
         }
 
         private void BackSpaceButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.RemoveLastChar();
-        }
-
-        private void ReadLayouts()
-        {
-
-        }
-        private void ShowLayoutsPanel()
-        {
+            _viewModel.RemoveLastChar();
         }
 
         private void KeyboardLayoutsPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -120,26 +131,24 @@ namespace OSProject
             if (e.Source is Selector selectedItem &&
                 selectedItem.SelectedItem is KeyboardLayout layout)
             {
-                ViewModel.SetLayout(layout.Name);
-                ShowKeyboardButtons();
+                _viewModel.SetLayout(layout.Name);
+                ShowKeyboard();
             }
         }
 
-
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
-            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(ViewModel);
+            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutsConfig.DefaultLayoutCongfig, _viewModel.layoutsDirectoryRoot);
 
+            var previousLayout = _viewModel.CurrentLayout;
             if (layoutAddingWindow.ShowDialog() == true)
-            {
-                // добавлять новую раскладку в коллекцию + добавлять новый файл
-                ViewModel.Layouts.Add(layoutAddingWindow.viewModel.NewLayout);
-            }
-            else
-            {
-                MessageBox.Show("BibleTum :(");
-            }
+                _viewModel.UpdateLayouts();
+
         }
 
+        private void textBlock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

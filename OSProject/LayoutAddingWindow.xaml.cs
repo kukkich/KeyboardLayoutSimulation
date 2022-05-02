@@ -1,42 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OSProject.Models;
+using OSProject.Models.Config;
+using OSProject.ViewModels;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using OSProject.ViewModels;
 
 namespace OSProject
 {
     public partial class LayoutAddingWindow : Window
     {
-        public LayoutAddingViewModel viewModel;
-        public LayoutAddingWindow(AppViewModel appViewModel)
+        private readonly LayoutAddingViewModel _viewModel;
+
+        public LayoutAddingWindow(DefaultLayoutCongfig layoutConfig, string layoutsDirectoryRoot)
         {
-            viewModel = new LayoutAddingViewModel(appViewModel, String.Empty, String.Empty);
+            _viewModel = new LayoutAddingViewModel(layoutConfig, layoutsDirectoryRoot);
 
             InitializeComponent();
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            nameTextField.DataContext = _viewModel;
+            buttonsList.DataContext = _viewModel;
         }
 
-        private void AddLayout_Click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.TryUpdate(name.Text, layout.Text);
-            if (viewModel.IsValid())
+            try
+            {
+                _viewModel.CreateNewLayout();
                 this.DialogResult = true;
-            else
-                MessageBox.Show(viewModel.Problem);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ChangeValueButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (e.Source is Button button &&
+                button.DataContext is ButtonSetting buttonSetting)
+            {
+                ButtonValueChangingWindow valueChangingWindow = new ButtonValueChangingWindow(buttonSetting);
+                valueChangingWindow.Owner = this;
+                valueChangingWindow.ShowDialog();
+            }
         }
     }
 }

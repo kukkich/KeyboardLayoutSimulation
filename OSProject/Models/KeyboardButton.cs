@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OSProject.Models
+﻿namespace OSProject.Models
 {
     public class KeyboardButton
     {
         public int Id { get; set; }
-        public char Value { get; set; }
+        public char? Value { get; set; }
 
-        public KeyboardButton(int id, char value)
+        public KeyboardButton(int id, char? value)
             => (Id, Value) = (id, value);
+        public KeyboardButton() { }
+
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace OSProject.Models.UI
@@ -26,7 +23,7 @@ namespace OSProject.Models.UI
 
         public bool HasKey(string key)
             => _data.ContainsKey(key);
-        
+
         public void AddOrChangeValue(string key, object value)
         {
             if (_data.ContainsKey(key))

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using OSProject.Models;
-using System.IO;
+using OSProject.Models.Config;
+using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace OSProject.ViewModels
 {
@@ -30,67 +31,102 @@ namespace OSProject.ViewModels
                 _currentLayout = value;
                 OnPropertyChanged("CurrentcurrentLayout");
             }
-        }
+        }         
         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
+        public readonly LayoutsConfig LayoutsConfig;
+        public readonly string layoutsDirectoryRoot;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private string _value;
         private KeyboardLayout _currentLayout;
-        private DirectoryInfo _rootDirectory;
-        private string _layoutsDirectoryRoot = @"C:\Users\vitia\source\repos\C#\WPF\OSProject\OSProject\Layouts\";
-        private string _layoutsFileExtension = ".txt";
+        private readonly DirectoryInfo _rootDirectory;
 
-        public AppViewModel(string content)
+        public AppViewModel(string content, LayoutsConfig defaultLayoutConfig)
         {
+            LayoutsConfig = defaultLayoutConfig;
             Value = content;
             Layouts = new ObservableCollection<KeyboardLayout>();
-            _rootDirectory = new DirectoryInfo(_layoutsDirectoryRoot);
 
+            string appRoot = AppDomain.CurrentDomain.BaseDirectory;
+            layoutsDirectoryRoot = new DirectoryInfo(appRoot).Parent.Parent
+                .GetDirectories()
+                .FirstOrDefault(directory => directory.Name == "Layouts")
+                ?.FullName;
+
+            if (layoutsDirectoryRoot is null)
+            {
+                MessageBox.Show("Нет дирректории Layouts");
+                System.Environment.Exit(1);
+            }
+
+            _rootDirectory = new DirectoryInfo(layoutsDirectoryRoot);
         }
 
         public void SetLayout(string name)
         {
             CurrentLayout = Layouts.First(x => x.Name == name);
         }
-        
+
         public void UpdateLayouts()
         {
+            EnsureExamplesCreated();
             var layoutsData = _rootDirectory.GetFiles();
+            Layouts.Clear();
             foreach (var layoutFile in layoutsData)
-            {
-                ReadKeyboardLayout(layoutFile.Name.Remove(
-                    layoutFile.Name.Length - _layoutsFileExtension.Length
-                ));
+            { 
+                ReadKeyboardLayout(layoutFile);
             }
+            CurrentLayout = Layouts.First();
+            OnPropertyChanged(nameof(CurrentLayout));
         }
 
-        private void ReadKeyboardLayout(string layoutName)
+        public char GetConfiguredCharacter(int characterId)
         {
-            using (StreamReader stream = new StreamReader(_layoutsDirectoryRoot + layoutName + _layoutsFileExtension))
-            {
-                Layouts.Add(new KeyboardLayout(layoutName, stream));
-            }
-        }
-
-        private void ChangeLayout(string layoutName)
-        {
-            CurrentLayout = Layouts.First(x => x.Name ==layoutName);
+            return LayoutsConfig.DefaultLayoutCongfig.GetCharacterById(characterId);
         }
 
         public void Clear()
         {
             Value = String.Empty;
         }
+
         public void RemoveLastChar()
         {
             if (!String.IsNullOrEmpty(Value))
                 Value = Value.Remove(Value.Length - 1);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        private void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
+        private void ReadKeyboardLayout(FileInfo file)
+        {
+            using (StreamReader stream = new StreamReader(file.FullName))
+            {
+                JsonSerializerSettings settings = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+                KeyboardLayout newLayout = JsonConvert.DeserializeObject<KeyboardLayout>(stream.ReadToEnd(), settings);
+                Layouts.Add(newLayout);
+            }
+        }
+
+        private void EnsureExamplesCreated()
+        {
+
+            if (!LayoutsConfig.LayoutsExamples
+                .All(example =>
+                    Layouts.Any(layout => layout.Name == example.Name)
+                ))
+            {
+                foreach (var layoutExample in LayoutsConfig.LayoutsExamples)
+                {
+                    File.WriteAllText(
+                        Path.Combine(_rootDirectory.FullName, layoutExample.Name + ".json"),
+                        JsonConvert.SerializeObject(layoutExample, Formatting.Indented)
+                    );
+                }
+            }
+        }
     }
 }

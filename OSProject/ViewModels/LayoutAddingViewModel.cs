@@ -1,74 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 using OSProject.Models;
+using OSProject.Models.Config;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace OSProject.ViewModels
 {
-    public class LayoutAddingViewModel
+    public class LayoutAddingViewModel : INotifyPropertyChanged
     {
-        public KeyboardLayout NewLayout
+        // !TODO добавить возможность сделать все значения кнопок null-м
+        // !TODO При надобности создать модели для соблюдения уникального нейминга раскладок (такое в теории может понадобится где-то ещё)
+
+        public string NewLayoutName
         {
-            get
+            get => _newLayoutName;
+            set
             {
-                if (IsValid()) return _newLayout;
-                else throw new InvalidOperationException(_problem);
+                _newLayoutName = value;
+                OnPropertyChanged(nameof(NewLayoutName));
             }
         }
-        public KeyboardLayout _newLayout;
-        public string Problem 
-        { 
-            get
-            {
-                if (IsValid()) return String.Empty;
-                else return _problem;
-            }
-        }
+        public ObservableCollection<ButtonSetting> ButtonsSetting { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private readonly AppViewModel _appViewModel;
-        private bool _hasException = false;
-        private string _problem;
+        private string _newLayoutName;
+        private readonly DefaultLayoutCongfig _layoutConfig;
+        private readonly string _layoutsDirectoryRoot;
 
-        public LayoutAddingViewModel(AppViewModel appViewModel, string name, string layout)
+        public LayoutAddingViewModel(DefaultLayoutCongfig layoutConfig, string layoutsDirectoryRoot)
         {
-            _appViewModel = appViewModel;
-            try
-            {
-                _newLayout = new KeyboardLayout(name, layout);
-                _hasException = false;
-            }
-            catch (ArgumentException ex)
-            {
-                _hasException = true;
-                _problem = ex.Message;
-            }
+            if (layoutConfig is null)
+                throw new ArgumentNullException(nameof(layoutConfig));
+
+            _layoutConfig = layoutConfig;
+            NewLayoutName = "Название";
+            ButtonsSetting = new ObservableCollection<ButtonSetting>();
+            foreach (var line in _layoutConfig.GetDefaultLayout())
+                foreach (KeyboardButton button in line)
+                    ButtonsSetting.Add(new ButtonSetting(button, _layoutConfig.GetCharacterById(button.Id)));
+            
+            _layoutsDirectoryRoot = layoutsDirectoryRoot;
         }
 
-        public void TryUpdate(string name, string layout)
+        public void CreateNewLayout()
         {
-            try
+            if (String.IsNullOrEmpty(_newLayoutName))
             {
-                _newLayout = new KeyboardLayout(name, layout);
-                _hasException = false;
+                throw new InvalidOperationException("Имя раскаладки должо быть не пустым");
             }
-            catch (ArgumentException ex)
+            if (!ButtonsSetting.Any(setting => !(setting.SettedValue is null)))
             {
-                _hasException = true;
-                _problem = ex.Message;
+                throw new InvalidOperationException("Хотя бы одна кнопка должна быть не пустой");
             }
+
+            var builder = new List<List<KeyboardButton>>();
+
+            int buttonId = 0;
+            foreach (string str in _layoutConfig.Lines)
+            {
+                var line = new List<KeyboardButton>();
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if (!(ButtonsSetting[buttonId].SettedValue is null))
+                    {
+                        line.Add(new KeyboardButton(buttonId, ButtonsSetting[buttonId].SettedValue));
+                    }
+                    buttonId++;
+                }
+                builder.Add(line);
+            }
+            KeyboardLayout layout = new KeyboardLayout(_newLayoutName, builder);
+
+            File.WriteAllText(
+                Path.Combine(_layoutsDirectoryRoot, _newLayoutName + ".json"),
+                JsonConvert.SerializeObject(layout, Formatting.Indented)
+            );
         }
 
-        public bool IsValid()
+        private void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-            if (_hasException) return false;
-
-            var sameLayout = _appViewModel.Layouts.FirstOrDefault(layout => layout.Name == _newLayout.Name);
-            if (!(sameLayout is null)) _problem = "Раскладка с таким именем уже существует"; 
-
-            return sameLayout is null;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-
     }
 }
