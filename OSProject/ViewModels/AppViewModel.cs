@@ -31,34 +31,35 @@ namespace OSProject.ViewModels
                 _currentLayout = value;
                 OnPropertyChanged("CurrentcurrentLayout");
             }
-        }         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
-        public readonly DefaultLayoutCongfig LayoutConfig;
-        public readonly string LayoutsDirectoryRoot;
+        }         
+        public ObservableCollection<KeyboardLayout> Layouts { get; set; }
+        public readonly LayoutsConfig LayoutsConfig;
+        public readonly string layoutsDirectoryRoot;
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _value;
         private KeyboardLayout _currentLayout;
         private readonly DirectoryInfo _rootDirectory;
 
-        public AppViewModel(string content, DefaultLayoutCongfig defaultLayoutConfig)
+        public AppViewModel(string content, LayoutsConfig defaultLayoutConfig)
         {
-            LayoutConfig = defaultLayoutConfig;
+            LayoutsConfig = defaultLayoutConfig;
             Value = content;
             Layouts = new ObservableCollection<KeyboardLayout>();
 
             string appRoot = AppDomain.CurrentDomain.BaseDirectory;
-            LayoutsDirectoryRoot = new DirectoryInfo(appRoot).Parent.Parent
+            layoutsDirectoryRoot = new DirectoryInfo(appRoot).Parent.Parent
                 .GetDirectories()
                 .FirstOrDefault(directory => directory.Name == "Layouts")
                 ?.FullName;
 
-            if (LayoutsDirectoryRoot is null)
+            if (layoutsDirectoryRoot is null)
             {
                 MessageBox.Show("Нет дирректории Layouts");
                 System.Environment.Exit(1);
             }
 
-            _rootDirectory = new DirectoryInfo(LayoutsDirectoryRoot);
+            _rootDirectory = new DirectoryInfo(layoutsDirectoryRoot);
         }
 
         public void SetLayout(string name)
@@ -68,9 +69,9 @@ namespace OSProject.ViewModels
 
         public void UpdateLayouts()
         {
+            EnsureExamplesCreated();
             var layoutsData = _rootDirectory.GetFiles();
             Layouts.Clear();
-            EnsureExamplesCreated();
             foreach (var layoutFile in layoutsData)
             { 
                 ReadKeyboardLayout(layoutFile);
@@ -81,7 +82,7 @@ namespace OSProject.ViewModels
 
         public char GetConfiguredCharacter(int characterId)
         {
-            return LayoutConfig.GetCharacterById(characterId);
+            return LayoutsConfig.DefaultLayoutCongfig.GetCharacterById(characterId);
         }
 
         public void Clear()
@@ -112,10 +113,19 @@ namespace OSProject.ViewModels
 
         private void EnsureExamplesCreated()
         {
-            if (!(Layouts.Any(layout => layout.Name == "Eng") &&
-                Layouts.Any(layout => layout.Name == "Rus"))
-                )
+
+            if (!LayoutsConfig.LayoutsExamples
+                .All(example =>
+                    Layouts.Any(layout => layout.Name == example.Name)
+                ))
             {
+                foreach (var layoutExample in LayoutsConfig.LayoutsExamples)
+                {
+                    File.WriteAllText(
+                        Path.Combine(_rootDirectory.FullName, layoutExample.Name + ".json"),
+                        JsonConvert.SerializeObject(layoutExample, Formatting.Indented)
+                    );
+                }
             }
         }
     }

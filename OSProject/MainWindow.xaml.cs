@@ -35,7 +35,7 @@ namespace OSProject
 
             LayoutsConfig layoutsConfig = config.GetRequiredSection(nameof(LayoutsConfig)).Get<LayoutsConfig>();
             
-            _viewModel = new AppViewModel("Ваш текст", layoutsConfig.DefaultLayoutCongfig);
+            _viewModel = new AppViewModel("Ваш текст", layoutsConfig);
 
             textBlock.DataContext = _viewModel;
             keyboardLayoutsPanel.DataContext = _viewModel;
@@ -138,7 +138,7 @@ namespace OSProject
 
         private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
-            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutConfig, _viewModel.LayoutsDirectoryRoot);
+            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutsConfig.DefaultLayoutCongfig, _viewModel.layoutsDirectoryRoot);
 
             var previousLayout = _viewModel.CurrentLayout;
             if (layoutAddingWindow.ShowDialog() == true)
