@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using OSProject.Models;
+using OSProject.Models.Config;
 using OSProject.Models.UI;
 using OSProject.ViewModels;
 using System;
@@ -29,12 +30,12 @@ namespace OSProject
 
             var config = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json").Build();
-            DefaultKeyboardLayoutConfig layoutConfig = config
-                .GetSection(nameof(DefaultKeyboardLayoutConfig))
-                .Get<DefaultKeyboardLayoutConfig>();
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-            _viewModel = new AppViewModel("Ваш текст", layoutConfig);
+            LayoutsConfig layoutsConfig = config.GetRequiredSection(nameof(LayoutsConfig)).Get<LayoutsConfig>();
+            
+            _viewModel = new AppViewModel("Ваш текст", layoutsConfig.DefaultLayoutCongfig);
 
             textBlock.DataContext = _viewModel;
             keyboardLayoutsPanel.DataContext = _viewModel;

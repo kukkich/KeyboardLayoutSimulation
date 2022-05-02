@@ -16,11 +16,11 @@ namespace OSProject.Models
             get => _name;
             set => _name = value;
         }
+        [JsonProperty("Lines")]
+        public List<List<KeyboardButton>> Lines { get; set; }
 
         [JsonIgnore]
         private string _name;
-        [JsonProperty("Lines")]
-        private List<List<KeyboardButton>> _lines;
 
         public KeyboardLayout(string name, string text)
         {
@@ -28,7 +28,7 @@ namespace OSProject.Models
             if (String.IsNullOrEmpty(text)) throw new ArgumentException("Пустая строка", nameof(text));
 
             _name = name;
-            _lines = new List<List<KeyboardButton>>();
+            Lines = new List<List<KeyboardButton>>();
 
             int lastLineIndex = 0;
             int lastButtonId = 0;
@@ -36,10 +36,10 @@ namespace OSProject.Models
             {
                 if (!String.IsNullOrEmpty(str))
                 {
-                    _lines.Add(new List<KeyboardButton>());
+                    Lines.Add(new List<KeyboardButton>());
                     foreach (char sym in str)
                     {
-                        _lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
+                        Lines[lastLineIndex].Add(new KeyboardButton(lastButtonId, sym));
                         lastButtonId++;
                     }
                     lastLineIndex++;
@@ -51,15 +51,15 @@ namespace OSProject.Models
         public KeyboardLayout()
         {
             Name = "empty";
-            _lines = new List<List<KeyboardButton>>();
+            Lines = new List<List<KeyboardButton>>();
         }
 
         public KeyboardLayout(string name, List<List<KeyboardButton>> lines)
-            => (Name, _lines) = (name, lines);
+            => (Name, Lines) = (name, lines);
 
         public char? GetBottonValue(int buttonId)
         {
-            return _lines.FirstOrDefault(line =>
+            return Lines.FirstOrDefault(line =>
                     line.Any(button => button.Id == buttonId)
                 )
                 ?.FirstOrDefault(button => button.Id == buttonId)
@@ -67,11 +67,11 @@ namespace OSProject.Models
         }
 
         public IEnumerator<List<KeyboardButton>> GetEnumerator()
-            => _lines.GetEnumerator();
+            => Lines.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)_lines).GetEnumerator();
+            return ((IEnumerable)Lines).GetEnumerator();
         }
     }
 }

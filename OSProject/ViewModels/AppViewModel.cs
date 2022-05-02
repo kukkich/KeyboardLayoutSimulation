@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using OSProject.Models;
+using OSProject.Models.Config;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -29,9 +31,8 @@ namespace OSProject.ViewModels
                 _currentLayout = value;
                 OnPropertyChanged("CurrentcurrentLayout");
             }
-        }
-        public ObservableCollection<KeyboardLayout> Layouts { get; set; }
-        public readonly DefaultKeyboardLayoutConfig LayoutConfig;
+        }         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
+        public readonly DefaultLayoutCongfig LayoutConfig;
         public readonly string LayoutsDirectoryRoot;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -39,7 +40,7 @@ namespace OSProject.ViewModels
         private KeyboardLayout _currentLayout;
         private readonly DirectoryInfo _rootDirectory;
 
-        public AppViewModel(string content, DefaultKeyboardLayoutConfig defaultLayoutConfig)
+        public AppViewModel(string content, DefaultLayoutCongfig defaultLayoutConfig)
         {
             LayoutConfig = defaultLayoutConfig;
             Value = content;
@@ -69,6 +70,7 @@ namespace OSProject.ViewModels
         {
             var layoutsData = _rootDirectory.GetFiles();
             Layouts.Clear();
+            EnsureExamplesCreated();
             foreach (var layoutFile in layoutsData)
             { 
                 ReadKeyboardLayout(layoutFile);
@@ -105,6 +107,15 @@ namespace OSProject.ViewModels
                 JsonSerializerSettings settings = new JsonSerializerSettings() { Formatting = Formatting.Indented };
                 KeyboardLayout newLayout = JsonConvert.DeserializeObject<KeyboardLayout>(stream.ReadToEnd(), settings);
                 Layouts.Add(newLayout);
+            }
+        }
+
+        private void EnsureExamplesCreated()
+        {
+            if (!(Layouts.Any(layout => layout.Name == "Eng") &&
+                Layouts.Any(layout => layout.Name == "Rus"))
+                )
+            {
             }
         }
     }

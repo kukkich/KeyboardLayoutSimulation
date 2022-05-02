@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OSProject.Models;
+using OSProject.Models.Config;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,10 +29,10 @@ namespace OSProject.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _newLayoutName;
-        private readonly DefaultKeyboardLayoutConfig _layoutConfig;
+        private readonly DefaultLayoutCongfig _layoutConfig;
         private readonly string _layoutsDirectoryRoot;
 
-        public LayoutAddingViewModel(DefaultKeyboardLayoutConfig layoutConfig, string layoutsDirectoryRoot)
+        public LayoutAddingViewModel(DefaultLayoutCongfig layoutConfig, string layoutsDirectoryRoot)
         {
             if (layoutConfig is null)
                 throw new ArgumentNullException(nameof(layoutConfig));

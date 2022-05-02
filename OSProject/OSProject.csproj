@@ -149,7 +149,8 @@
       <DependentUpon>LayoutAddingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ButtonSetting.cs" />
-    <Compile Include="Models\DefaultKeyboardLayoutConfig.cs" />
+    <Compile Include="Models\Config\LayoutsConfig.cs" />
+    <Compile Include="Models\Config\DefaultLayoutCongfig.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\ButtonValueChangingViewModel.cs" />
     <Compile Include="ViewModels\LayoutAddingViewModel.cs" />
@@ -226,5 +227,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets'))" />
   </Target>
-  <ProjectExtensions />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties appsettings_1json__JsonSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

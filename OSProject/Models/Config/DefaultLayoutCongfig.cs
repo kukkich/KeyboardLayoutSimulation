@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 
-namespace OSProject.Models
+namespace OSProject.Models.Config
 {
-    public class DefaultKeyboardLayoutConfig
+    public class DefaultLayoutCongfig
     {
         public string[] Lines
         {

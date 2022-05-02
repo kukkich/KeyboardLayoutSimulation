@@ -1,4 +1,5 @@
 ﻿using OSProject.Models;
+using OSProject.Models.Config;
 using OSProject.ViewModels;
 using System;
 using System.Windows;
@@ -10,7 +11,7 @@ namespace OSProject
     {
         private readonly LayoutAddingViewModel _viewModel;
 
-        public LayoutAddingWindow(DefaultKeyboardLayoutConfig layoutConfig, string layoutsDirectoryRoot)
+        public LayoutAddingWindow(DefaultLayoutCongfig layoutConfig, string layoutsDirectoryRoot)
         {
             _viewModel = new LayoutAddingViewModel(layoutConfig, layoutsDirectoryRoot);
 
