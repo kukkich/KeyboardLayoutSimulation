@@ -76,14 +76,12 @@ namespace OSProject
 
             foreach (KeyboardButton button in line)
             {
-
                 DataButton UIbutton = new DataButton
                 {
                     Content = _viewModel.GetConfiguredCharacter(button.Id),
                     Width = _buttonSize.Width,
                     Height = _buttonSize.Height
                 };
-
 
                 UIbutton.AddOrChangeValue("BindedValue", button.Value);
                 UIbutton.AddOrChangeValue("Id", button.Id);
@@ -111,9 +109,7 @@ namespace OSProject
         private void KeyboardCanvas_Click(object sender, RoutedEventArgs e)
         {
             if (e.Source is DataButton button)
-            {
                 _viewModel.Value += _viewModel.CurrentLayout.GetBottonValue((int)button.GetData("Id"));
-            }
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
