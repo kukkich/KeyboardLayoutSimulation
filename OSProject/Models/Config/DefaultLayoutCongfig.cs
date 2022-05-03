@@ -42,5 +42,9 @@ namespace OSProject.Models.Config
             return _text[id];
         }
 
+        public int GetIdByCharacter(char character)
+        {
+            return _text.IndexOf(character);
+        }
     }
 }

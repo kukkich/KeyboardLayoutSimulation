@@ -8,6 +8,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -134,7 +135,10 @@ namespace OSProject
 
         private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
-            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(_viewModel.LayoutsConfig.DefaultLayoutCongfig, _viewModel.layoutsDirectoryRoot);
+            LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(
+                _viewModel.LayoutsConfig.DefaultLayoutCongfig, 
+                _viewModel.layoutsDirectoryRoot
+            );
 
             var previousLayout = _viewModel.CurrentLayout;
             if (layoutAddingWindow.ShowDialog() == true)
@@ -142,9 +146,23 @@ namespace OSProject
 
         }
 
-        private void textBlock_TextChanged(object sender, TextChangedEventArgs e)
+        private void textBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            e.Handled = true;
+            if (KeysConverter._valueByKey.ContainsKey(e.Key))
+            {
+                int id = _viewModel.LayoutsConfig.DefaultLayoutCongfig.GetIdByCharacter(KeysConverter._valueByKey[e.Key]);
+                _viewModel.Value += _viewModel.CurrentLayout.GetBottonValue(id);
+            }
+            else if (e.Key == Key.Back)
+            {
+                _viewModel.RemoveLastChar();
+            }
 
+            if (sender is TextBox textBox)
+            {
+                textBox.CaretIndex = _viewModel.Value.Length;
+            }
         }
     }
 }

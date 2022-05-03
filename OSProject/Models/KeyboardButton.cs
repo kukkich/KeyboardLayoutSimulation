@@ -8,6 +8,5 @@
         public KeyboardButton(int id, char? value)
             => (Id, Value) = (id, value);
         public KeyboardButton() { }
-
     }
 }

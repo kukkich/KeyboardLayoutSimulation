@@ -1,14 +1,14 @@
 {
-  "Name": "Rus",
+  "Name": "Моя",
   "Lines": [
     [
       {
         "Id": 0,
-        "Value": "ё"
+        "Value": "`"
       },
       {
         "Id": 1,
-        "Value": "1"
+        "Value": "ы"
       },
       {
         "Id": 2,
@@ -58,97 +58,97 @@
     [
       {
         "Id": 13,
-        "Value": "й"
+        "Value": "q"
       },
       {
         "Id": 14,
-        "Value": "ц"
+        "Value": "w"
       },
       {
         "Id": 15,
-        "Value": "у"
+        "Value": "e"
       },
       {
         "Id": 16,
-        "Value": "к"
+        "Value": "r"
       },
       {
         "Id": 17,
-        "Value": "е"
+        "Value": "t"
       },
       {
         "Id": 18,
-        "Value": "н"
+        "Value": "y"
       },
       {
         "Id": 19,
-        "Value": "г"
+        "Value": "u"
       },
       {
         "Id": 20,
-        "Value": "ш"
+        "Value": "i"
       },
       {
         "Id": 21,
-        "Value": "щ"
+        "Value": "o"
       },
       {
         "Id": 22,
-        "Value": "з"
+        "Value": "p"
       },
       {
         "Id": 23,
-        "Value": "х"
+        "Value": "["
       },
       {
         "Id": 24,
-        "Value": "ъ"
+        "Value": "]"
       }
     ],
     [
       {
         "Id": 25,
-        "Value": "ф"
+        "Value": "a"
       },
       {
         "Id": 26,
-        "Value": "ы"
+        "Value": "s"
       },
       {
         "Id": 27,
-        "Value": "в"
+        "Value": "d"
       },
       {
         "Id": 28,
-        "Value": "а"
+        "Value": "f"
       },
       {
         "Id": 29,
-        "Value": "п"
+        "Value": "g"
       },
       {
         "Id": 30,
-        "Value": "р"
+        "Value": "h"
       },
       {
         "Id": 31,
-        "Value": "о"
+        "Value": "j"
       },
       {
         "Id": 32,
-        "Value": "л"
+        "Value": "k"
       },
       {
         "Id": 33,
-        "Value": "д"
+        "Value": "l"
       },
       {
         "Id": 34,
-        "Value": "ж"
+        "Value": ";"
       },
       {
         "Id": 35,
-        "Value": "э"
+        "Value": "'"
       },
       {
         "Id": 36,
@@ -158,43 +158,43 @@
     [
       {
         "Id": 37,
-        "Value": "я"
+        "Value": "z"
       },
       {
         "Id": 38,
-        "Value": "ч"
+        "Value": "x"
       },
       {
         "Id": 39,
-        "Value": "с"
+        "Value": "c"
       },
       {
         "Id": 40,
-        "Value": "м"
+        "Value": "v"
       },
       {
         "Id": 41,
-        "Value": "и"
+        "Value": "b"
       },
       {
         "Id": 42,
-        "Value": "т"
+        "Value": "n"
       },
       {
         "Id": 43,
-        "Value": "ь"
+        "Value": "m"
       },
       {
         "Id": 44,
-        "Value": "б"
+        "Value": ","
       },
       {
         "Id": 45,
-        "Value": "ю"
+        "Value": "."
       },
       {
         "Id": 46,
-        "Value": "."
+        "Value": "/"
       }
     ]
   ]
