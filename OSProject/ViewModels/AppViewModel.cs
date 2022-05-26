@@ -30,7 +30,7 @@ namespace OSProject.ViewModels
                 _currentLayout = value;
                 OnPropertyChanged("CurrentcurrentLayout");
             }
-        }         
+        }
         public ObservableCollection<KeyboardLayout> Layouts { get; set; }
         public readonly LayoutsConfig LayoutsConfig;
         public readonly string layoutsDirectoryRoot;
@@ -72,7 +72,7 @@ namespace OSProject.ViewModels
             var layoutsData = _rootDirectory.GetFiles();
             Layouts.Clear();
             foreach (var layoutFile in layoutsData)
-            { 
+            {
                 ReadKeyboardLayout(layoutFile);
             }
             CurrentLayout = Layouts.First();

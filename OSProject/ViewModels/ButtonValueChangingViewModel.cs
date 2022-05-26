@@ -22,7 +22,7 @@ namespace OSProject.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _newValue;
-        private ButtonSetting _buttonSetting;
+        private readonly ButtonSetting _buttonSetting;
 
         public ButtonValueChangingViewModel(ButtonSetting buttonSetting) =>
             (_buttonSetting, _newValue) = (buttonSetting, buttonSetting.SettedValue.ToString());

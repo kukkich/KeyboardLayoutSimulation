@@ -150,7 +150,7 @@
     </Compile>
     <Compile Include="Models\ButtonSetting.cs" />
     <Compile Include="Models\Config\LayoutsConfig.cs" />
-    <Compile Include="Models\Config\DefaultLayoutCongfig.cs" />
+    <Compile Include="Models\Config\DefaultLayoutConfig.cs" />
     <Compile Include="Models\KeysConverter.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\ButtonValueChangingViewModel.cs" />

@@ -11,7 +11,7 @@ namespace OSProject
     {
         private readonly LayoutAddingViewModel _viewModel;
 
-        public LayoutAddingWindow(DefaultLayoutCongfig layoutConfig, string layoutsDirectoryRoot)
+        public LayoutAddingWindow(DefaultLayoutConfig layoutConfig, string layoutsDirectoryRoot)
         {
             _viewModel = new LayoutAddingViewModel(layoutConfig, layoutsDirectoryRoot);
 

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace OSProject.Models.Config
 {
-    public class DefaultLayoutCongfig
+    public class DefaultLayoutConfig
     {
         public string[] Lines
         {

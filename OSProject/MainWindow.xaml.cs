@@ -4,14 +4,13 @@ using OSProject.Models.Config;
 using OSProject.Models.UI;
 using OSProject.ViewModels;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace OSProject
 {
@@ -36,7 +35,7 @@ namespace OSProject
                 .Build();
 
             LayoutsConfig layoutsConfig = config.GetRequiredSection(nameof(LayoutsConfig)).Get<LayoutsConfig>();
-            
+
             _viewModel = new AppViewModel("Ваш текст", layoutsConfig);
 
             textBlock.DataContext = _viewModel;
@@ -139,7 +138,7 @@ namespace OSProject
         private void AddingButton_Click(object sender, RoutedEventArgs e)
         {
             LayoutAddingWindow layoutAddingWindow = new LayoutAddingWindow(
-                _viewModel.LayoutsConfig.DefaultLayoutCongfig, 
+                _viewModel.LayoutsConfig.DefaultLayoutCongfig,
                 _viewModel.layoutsDirectoryRoot
             );
 
@@ -151,16 +150,16 @@ namespace OSProject
         private void textBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
-            if (KeysConverter._valueByKey.ContainsKey(e.Key))
+            if (KeysConverter.ValueByKey.ContainsKey(e.Key))
             {
-                int id = _viewModel.LayoutsConfig.DefaultLayoutCongfig.GetIdByCharacter(KeysConverter._valueByKey[e.Key]);
+                int id = _viewModel.LayoutsConfig.DefaultLayoutCongfig.GetIdByCharacter(KeysConverter.ValueByKey[e.Key]);
                 _viewModel.Value += _viewModel.CurrentLayout.GetBottonValue(id);
             }
             else if (e.Key == Key.Back)
             {
                 _viewModel.RemoveLastChar();
             }
-            else if(e.Key == Key.Space)
+            else if (e.Key == Key.Space)
             {
                 _viewModel.Value += " ";
             }

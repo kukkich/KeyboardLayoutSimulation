@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
-using OSProject.Models.Config;
 
 namespace OSProject.Models
 {
-    public class KeysConverter
+    public static class KeysConverter
     {
-        public static readonly Dictionary<Key, char> _valueByKey = new Dictionary<Key, char>()
+        public static readonly Dictionary<Key, char> ValueByKey = new Dictionary<Key, char>()
         {
             [Key.D0] = '0',
             [Key.D1] = '1',
@@ -60,9 +55,5 @@ namespace OSProject.Models
             [Key.OemPlus] = '=',
             [Key.OemMinus] = '-',
         };
-        private DefaultLayoutCongfig _defaultLayout;
-
-        public KeysConverter(DefaultLayoutCongfig layoutCongfig) =>
-            _defaultLayout = layoutCongfig;
     }
 }

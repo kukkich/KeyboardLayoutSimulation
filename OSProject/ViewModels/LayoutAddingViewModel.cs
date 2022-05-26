@@ -29,10 +29,10 @@ namespace OSProject.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _newLayoutName;
-        private readonly DefaultLayoutCongfig _layoutConfig;
+        private readonly DefaultLayoutConfig _layoutConfig;
         private readonly string _layoutsDirectoryRoot;
 
-        public LayoutAddingViewModel(DefaultLayoutCongfig layoutConfig, string layoutsDirectoryRoot)
+        public LayoutAddingViewModel(DefaultLayoutConfig layoutConfig, string layoutsDirectoryRoot)
         {
             if (layoutConfig is null)
                 throw new ArgumentNullException(nameof(layoutConfig));
@@ -43,7 +43,7 @@ namespace OSProject.ViewModels
             foreach (var line in _layoutConfig.GetDefaultLayout())
                 foreach (KeyboardButton button in line)
                     ButtonsSetting.Add(new ButtonSetting(button, _layoutConfig.GetCharacterById(button.Id)));
-            
+
             _layoutsDirectoryRoot = layoutsDirectoryRoot;
         }
 
