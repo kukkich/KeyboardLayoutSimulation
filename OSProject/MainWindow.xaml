@@ -77,7 +77,7 @@
             <DockPanel Margin="30 -50 30 0" Height="192" MaxWidth="830" Width="1007">
                 <TextBox x:Name="textBlock" TextWrapping="Wrap" FontSize="20"  Text="{Binding Path=Value}" 
                            Height="95" Width="738"
-                           PreviewKeyDown="textBlock_PreviewKeyDown"
+                           PreviewKeyDown="textBox_PreviewKeyDown"
                            Background="#FFA3E4DB"
                            VerticalScrollBarVisibility="Auto"
                            HorizontalScrollBarVisibility="Auto" Foreground="#FF2E766A"

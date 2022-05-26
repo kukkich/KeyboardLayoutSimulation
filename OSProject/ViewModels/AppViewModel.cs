@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using OSProject.Models;
 using OSProject.Models.Config;
 using System;
@@ -48,7 +47,7 @@ namespace OSProject.ViewModels
             Layouts = new ObservableCollection<KeyboardLayout>();
 
             string appRoot = AppDomain.CurrentDomain.BaseDirectory;
-            layoutsDirectoryRoot = new DirectoryInfo(appRoot).Parent.Parent
+            layoutsDirectoryRoot = new DirectoryInfo(appRoot).Parent
                 .GetDirectories()
                 .FirstOrDefault(directory => directory.Name == "Layouts")
                 ?.FullName;

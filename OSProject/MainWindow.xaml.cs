@@ -28,6 +28,7 @@ namespace OSProject
         {
             InitializeComponent();
             this.ResizeMode = ResizeMode.NoResize;
+            this.Title = "Эмуляция драйвера клавиатуры";
 
             var config = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -43,6 +44,8 @@ namespace OSProject
 
             _viewModel.UpdateLayouts();
             _viewModel.SetLayout("Eng");
+
+
 
             SetColors();
 
@@ -143,7 +146,6 @@ namespace OSProject
             var previousLayout = _viewModel.CurrentLayout;
             if (layoutAddingWindow.ShowDialog() == true)
                 _viewModel.UpdateLayouts();
-
         }
 
         private void textBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -157,6 +159,10 @@ namespace OSProject
             else if (e.Key == Key.Back)
             {
                 _viewModel.RemoveLastChar();
+            }
+            else if(e.Key == Key.Space)
+            {
+                _viewModel.Value += " ";
             }
 
             if (sender is TextBox textBox)

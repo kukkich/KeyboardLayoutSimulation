@@ -64,10 +64,5 @@ namespace OSProject.Models
 
         public KeysConverter(DefaultLayoutCongfig layoutCongfig) =>
             _defaultLayout = layoutCongfig;
-
-        //public int GetKeyIdFromConfig(Key key)
-        //{
-
-        //}
     }
 }
